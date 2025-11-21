@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Array Master - Seu Treinamento Definitivo</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --dark-lighter: #334155;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --accent: #22d3ee;
+            --code-bg: #1a1f36;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1f36 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        h1 {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        main {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr 400px;
+            gap: 1.5rem;
+        }
+
+        aside {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .tutorial-panel {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .tutorial-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tutorial-panel::-webkit-scrollbar-track {
+            background: var(--dark-lighter);
+            border-radius: 4px;
+        }
+
+        .tutorial-panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .level-title {
+            color: var(--accent);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.75rem;
+            background: var(--dark-lighter);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level-title:first-child {
+            margin-top: 0;
+        }
+
+        .level-title:hover {
+            background: var(--primary-dark);
+            transform: translateX(3px);
+        }
+
+        .level-title::after {
+            content: '▼';
+            font-size: 0.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .level-title.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .exercise-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            opacity: 1;
+            margin-bottom: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .exercise-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .exercise-list::-webkit-scrollbar-track {
+            background: var(--dark);
+            border-radius: 3px;
+        }
+
+        .exercise-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .exercise-list::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        .exercise-list.hidden {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
+
+        .exercise-item {
+            padding: 0.6rem 0.8rem;
+            margin-bottom: 0.4rem;
+            background: var(--dark-lighter);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .exercise-item:hover {
+            background: var(--primary-dark);
+            transform: translateX(5px);
+            border-left-color: var(--accent);
+        }
+
+        .exercise-item.active {
+            background: var(--primary);
+            border-left-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .exercise-item.completed {
+            opacity: 0.7;
+        }
+
+        .exercise-item.completed::after {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .content-area {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .jeff-section {
+            background: linear-gradient(135deg, var(--dark-lighter) 0%, var(--dark-light) 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jeff-section::before {
+            content: '👨‍💼';
+            position: absolute;
+            font-size: 4rem;
+            opacity: 0.1;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .jeff-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .jeff-avatar {
+            font-size: 3rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .jeff-name {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .jeff-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tutorial-section {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .tutorial-section h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .tutorial-section p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .code-example {
+            background: var(--dark);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--dark-lighter);
+        }
+
+        .hints-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .hint-toggle {
+            background: transparent;
+            color: var(--warning);
+            border: 2px solid var(--warning);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .hint-toggle:hover {
+            background: var(--warning);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .hint {
+            background: var(--dark-lighter);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--warning);
+            display: none;
+        }
+
+        .hint.visible {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .editor-section {
+            margin-bottom: 2rem;
+        }
+
+        .editor-section h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: var(--dark);
+            color: var(--text);
+            border: 2px solid var(--dark-lighter);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-dim);
+            border: 2px solid var(--dark-lighter);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-lighter);
+            color: var(--text);
+            border-color: var(--text-dim);
+            transform: translateY(-2px);
+        }
+
+        .console-section {
+            background: var(--dark);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid var(--dark-lighter);
+        }
+
+        .console-header {
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .console-output {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .console-error {
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .console-success {
+            color: var(--success);
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 6px;
+            border-left: 4px solid var(--success);
+            animation: successPulse 0.5s ease;
+        }
+
+        .console-wrong {
+            color: var(--warning);
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(245, 158, 11, 0.15);
+            border-radius: 6px;
+            border-left: 4px solid var(--warning);
+            animation: wrongShake 0.5s ease;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .robot-motivator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+            max-width: 300px;
+            display: none;
+            animation: slideUp 0.5s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .robot-motivator.show {
+            display: block;
+        }
+
+        .robot-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .robot-icon {
+            font-size: 2rem;
+            animation: robotWave 1s ease-in-out infinite;
+        }
+
+        @keyframes robotWave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .robot-name {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .robot-message {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .progress-bar {
+            background: var(--dark-lighter);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success) 0%, var(--accent) 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: var(--dark-lighter);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            animation: statPulse 0.6s ease;
+        }
+
+        @keyframes statPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.highlight .stat-value {
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            margin-top: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.highlight .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 1024px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            aside, .tutorial-panel {
+                position: static;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <span class="logo">🚀</span>
+            JavaScript Array Master
+        </h1>
+    </header>
+
+    <main>
+        <aside>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="completedCount">0</div>
+                    <div class="stat-label">Completos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCount">75</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <h3 class="level-title collapsed" id="levelTitle1" onclick="toggleLevel(1)">📚 Nível 1 - Básico</h3>
+            <ul class="exercise-list hidden" id="level1"></ul>
+
+            <h3 class="level-title collapsed" id="levelTitle2" onclick="toggleLevel(2)">⚡ Nível 2 - Intermediário</h3>
+            <ul class="exercise-list hidden" id="level2"></ul>
+
+            <h3 class="level-title collapsed" id="levelTitle3" onclick="toggleLevel(3)">🔥 Nível 3 - Inter-Avançado</h3>
+            <ul class="exercise-list hidden" id="level3"></ul>
+
+            <h3 class="level-title collapsed" id="levelTitle4" onclick="toggleLevel(4)">💎 Nível 4 - Avançado</h3>
+            <ul class="exercise-list hidden" id="level4"></ul>
+        </aside>
+
+        <section class="content-area">
+            <article class="jeff-section">
+                <div class="jeff-header">
+                    <div class="jeff-avatar">👨‍💼</div>
+                    <div>
+                        <div class="jeff-name">Jeff - Seu Superior</div>
+                    </div>
+                </div>
+                <p class="jeff-message" id="jeffMessage">Carregando tarefa...</p>
+            </article>
+
+            <section class="hints-section">
+                <button class="hint-toggle" onclick="showNextHint()">💡 Mostrar Dica</button>
+                <div id="hintsContainer"></div>
+            </section>
+
+            <section class="editor-section">
+                <h2>💻 Seu Código</h2>
+                <textarea id="codeEditor" placeholder="// Escreva sua solução aqui..."></textarea>
+            </section>
+
+            <div class="button-group">
+                <button class="btn-primary" onclick="runCode()">▶️ Executar</button>
+                <button class="btn-secondary" onclick="resetCode()">🔄 Limpar</button>
+            </div>
+
+            <section class="console-section">
+                <div class="console-header">📟 Console:</div>
+                <div id="consoleOutput"></div>
+            </section>
+        </section>
+
+        <aside class="tutorial-panel">
+            <article class="tutorial-section">
+                <h2>📖 Tutorial</h2>
+                <div id="tutorialContent">Selecione um exercício para começar.</div>
+            </article>
+        </aside>
+    </main>
+
+    <div class="robot-motivator" id="robotMotivator">
+        <div class="robot-header">
+            <span class="robot-icon">🤖</span>
+            <span class="robot-name">CodeBot</span>
+        </div>
+        <p class="robot-message" id="robotMessage"></p>
+    </div>
+
+    <script>
+        const exercises = [
+            // NÍVEL 1 - BÁSICO (Exercícios 1-75 COMPLETOS)
+            {
+                level: 1,
+                id: 1,
+                title: "Criar Lista de Produtos",
+                jeff: "Ei! Preciso que você crie um array com 5 produtos do nosso e-commerce. Produtos simples: 'Notebook', 'Mouse', 'Teclado', 'Monitor', 'Webcam'. Depois mostre o terceiro produto no console.",
+                tutorial: "Arrays são listas que armazenam múltiplos valores. Criamos com colchetes [] e acessamos elementos pelo índice (começando em 0).",
+                tutorialCode: "const produtos = ['Item1', 'Item2', 'Item3'];\nconsole.log(produtos[0]); // Item1\nconsole.log(produtos[2]); // Item3",
+                hints: [
+                    "Use const para criar o array: const produtos = [...]",
+                    "Lembre-se: o índice começa em 0, então o terceiro item é índice 2",
+                    "Use console.log(produtos[2]) para mostrar o terceiro produto"
+                ],
+                initialCode: "// Crie o array de produtos aqui\n\n// Mostre o terceiro produto",
+                validation: (code) => {
+                    return code.includes('Notebook') && code.includes('Teclado') && code.includes('[2]');
+                }
+            },
+            {
+                level: 1,
+                id: 2,
+                title: "Tamanho da Lista",
+                jeff: "Ótimo! Agora preciso saber quantos produtos temos no total. Use a propriedade length para me dizer o tamanho do array.",
+                tutorial: "A propriedade .length retorna o número de elementos em um array.",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'laranja'];\nconsole.log(frutas.length); // 3",
+                hints: [
+                    "Use array.length para obter o tamanho",
+                    "Mostre o resultado com console.log()"
+                ],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado', 'Monitor', 'Webcam'];\n\n// Mostre quantos produtos existem",
+                validation: (code) => code.includes('.length')
+            },
+            {
+                level: 1,
+                id: 3,
+                title: "Adicionar Novo Produto",
+                jeff: "Recebemos um novo produto! Adicione 'Headset' no final da lista usando push().",
+                tutorial: "O método push() adiciona elementos no FINAL do array.",
+                tutorialCode: "const numeros = [1, 2, 3];\nnumeros.push(4);\nconsole.log(numeros); // [1, 2, 3, 4]",
+                hints: [
+                    "Use array.push('novo item')",
+                    "Mostre o array depois"
+                ],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado'];\n\n// Adicione 'Headset' no final",
+                validation: (code) => code.includes('push') && code.includes('Headset')
+            },
+            {
+                level: 1,
+                id: 4,
+                title: "Remover Último Produto",
+                jeff: "Ops! O Headset estava com defeito. Remove o último item usando pop().",
+                tutorial: "O método pop() remove e retorna o último elemento.",
+                tutorialCode: "const cores = ['azul', 'verde', 'vermelho'];\nconst removida = cores.pop();",
+                hints: ["Use pop()"],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado', 'Headset'];\n\n// Remova o último",
+                validation: (code) => code.includes('pop()')
+            },
+            {
+                level: 1,
+                id: 5,
+                title: "Adicionar no Início",
+                jeff: "Temos um produto em destaque! Adicione 'Impressora' no INÍCIO usando unshift().",
+                tutorial: "O método unshift() adiciona elementos no INÍCIO do array.",
+                tutorialCode: "const letras = ['b', 'c'];\nletras.unshift('a');",
+                hints: ["Use unshift()"],
+                initialCode: "const produtos = ['Notebook', 'Mouse'];\n\n// Adicione 'Impressora' no início",
+                validation: (code) => code.includes('unshift') && code.includes('Impressora')
+            },
+            {
+                level: 1,
+                id: 6,
+                title: "Remover do Início",
+                jeff: "A impressora foi vendida! Remove o primeiro item usando shift().",
+                tutorial: "O método shift() remove e retorna o PRIMEIRO elemento.",
+                tutorialCode: "const animais = ['gato', 'cachorro'];\nconst primeiro = animais.shift();",
+                hints: ["Use shift()"],
+                initialCode: "const produtos = ['Impressora', 'Notebook', 'Mouse'];\n\n// Remova o primeiro",
+                validation: (code) => code.includes('shift()')
+            },
+            {
+                level: 1,
+                id: 7,
+                title: "Verificar Existência",
+                jeff: "Um cliente perguntou se temos 'Teclado' em estoque. Use includes().",
+                tutorial: "O método includes() verifica se um elemento existe no array.",
+                tutorialCode: "const frutas = ['maçã', 'banana'];\nconsole.log(frutas.includes('banana')); // true",
+                hints: ["Use includes()"],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado'];\n\n// Verifique se existe 'Teclado'",
+                validation: (code) => code.includes('includes') && code.includes('Teclado')
+            },
+            {
+                level: 1,
+                id: 8,
+                title: "Encontrar Índice",
+                jeff: "Preciso saber em qual posição está o 'Mouse'. Use indexOf().",
+                tutorial: "O método indexOf() retorna o índice da primeira ocorrência.",
+                tutorialCode: "const cores = ['azul', 'verde', 'vermelho'];\nconsole.log(cores.indexOf('vermelho')); // 2",
+                hints: ["Use indexOf()"],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado'];\n\n// Encontre o índice de 'Mouse'",
+                validation: (code) => code.includes('indexOf') && code.includes('Mouse')
+            },
+            {
+                level: 1,
+                id: 9,
+                title: "Juntar Duas Listas",
+                jeff: "Recebemos produtos de dois fornecedores. Una os dois arrays usando concat().",
+                tutorial: "O método concat() junta dois ou mais arrays.",
+                tutorialCode: "const grupo1 = [1, 2];\nconst grupo2 = [3, 4];\nconst todos = grupo1.concat(grupo2);",
+                hints: ["Use concat()"],
+                initialCode: "const fornecedor1 = ['Notebook', 'Mouse'];\nconst fornecedor2 = ['Teclado', 'Monitor'];\n\n// Una os dois",
+                validation: (code) => code.includes('concat')
+            },
+            {
+                level: 1,
+                id: 10,
+                title: "Copiar Array",
+                jeff: "Preciso de uma cópia da lista para fazer testes. Crie uma cópia usando slice().",
+                tutorial: "O método slice() sem parâmetros cria uma cópia superficial do array inteiro.",
+                tutorialCode: "const original = [1, 2, 3];\nconst copia = original.slice();",
+                hints: ["Use slice()"],
+                initialCode: "const produtos = ['Notebook', 'Mouse', 'Teclado'];\n\n// Crie uma cópia do array",
+                validation: (code) => code.includes('slice()')
+            },
+            {
+                level: 1,
+                id: 11,
+                title: "Primeiro e Último Item",
+                jeff: "Preciso que você mostre o primeiro e o último produto da lista.",
+                tutorial: "Podemos acessar o último elemento usando array[array.length - 1].",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'laranja'];\nconsole.log(frutas[0]); // primeiro\nconsole.log(frutas[frutas.length - 1]); // último",
+                hints: ["Primeiro: [0]", "Último: [length - 1]"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor', 'Webcam', 'Headset'];\n\n// Mostre o primeiro e o último produto",
+                validation: (code) => code.includes('[0]') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 12,
+                title: "Modificar Item Específico",
+                jeff: "O preço do segundo produto mudou! Altere o valor do índice 1 para 299.",
+                tutorial: "Podemos modificar itens: array[indice] = novoValor",
+                tutorialCode: "const precos = [100, 200, 300];\nprecos[1] = 250;",
+                hints: ["Use array[1] = 299"],
+                initialCode: "const precos = [50, 150, 200, 300];\n\n// Altere o segundo preço para 299",
+                validation: (code) => code.includes('[1]') && code.includes('299')
+            },
+            {
+                level: 1,
+                id: 13,
+                title: "Adicionar Múltiplos Items",
+                jeff: "Recebemos 3 novos produtos! Adicione 'Mouse Pad', 'Hub USB' e 'Cabo HDMI' usando push.",
+                tutorial: "O método push() pode receber múltiplos argumentos.",
+                tutorialCode: "const lista = ['A'];\nlista.push('B', 'C', 'D');",
+                hints: ["Use push('item1', 'item2', 'item3')"],
+                initialCode: "const produtos = ['Notebook', 'Teclado'];\n\n// Adicione os 3 produtos",
+                validation: (code) => code.includes('push') && code.includes('Mouse Pad')
+            },
+            {
+                level: 1,
+                id: 14,
+                title: "Verificar Array Vazio",
+                jeff: "Antes de processar pedidos, preciso saber se a lista está vazia.",
+                tutorial: "Arrays vazios têm length igual a 0.",
+                tutorialCode: "const pedidos = [];\nif (pedidos.length === 0) {\n  console.log('Nenhum pedido!');\n}",
+                hints: ["Use length === 0"],
+                initialCode: "const pedidos = [];\n\n// Verifique se está vazio",
+                validation: (code) => code.includes('length') && (code.includes('=== 0') || code.includes('== 0'))
+            },
+            {
+                level: 1,
+                id: 15,
+                title: "Substituir Item no Início",
+                jeff: "O produto em destaque mudou! Remova o primeiro e adicione 'Super Notebook'.",
+                tutorial: "Combine shift() e unshift().",
+                tutorialCode: "const produtos = ['Produto A', 'Produto B'];\nprodutos.shift();\nprodutos.unshift('Produto Novo');",
+                hints: ["Primeiro shift(), depois unshift()"],
+                initialCode: "const destaques = ['Produto Antigo', 'Teclado', 'Mouse'];\n\n// Substitua o primeiro por 'Super Notebook'",
+                validation: (code) => code.includes('shift') && code.includes('unshift')
+            },
+
+            // NÍVEL 2 - INTERMEDIÁRIO
+            {
+                level: 2,
+                id: 16,
+                title: "Aplicar Desconto",
+                jeff: "Black Friday chegou! Aplique 10% de desconto em todos os preços usando map().",
+                tutorial: "O método map() cria um NOVO array aplicando uma função em cada elemento.",
+                tutorialCode: "const numeros = [10, 20, 30];\nconst dobrados = numeros.map(num => num * 2);",
+                hints: ["Use map()", "Multiplique por 0.9"],
+                initialCode: "const precos = [100, 200, 300, 400];\n\n// Aplique 10% de desconto",
+                validation: (code) => code.includes('map') && (code.includes('0.9') || code.includes('* 0.9'))
+            },
+            {
+                level: 2,
+                id: 17,
+                title: "Filtrar Produtos Caros",
+                jeff: "Preciso de uma lista apenas com produtos acima de R$ 500. Use filter().",
+                tutorial: "O método filter() cria um novo array apenas com elementos que passam no teste.",
+                tutorialCode: "const idades = [15, 22, 17, 30];\nconst maiores = idades.filter(idade => idade >= 18);",
+                hints: ["Use filter()", "Teste > 500"],
+                initialCode: "const precos = [299, 599, 450, 799, 199, 1200];\n\n// Filtre preços acima de 500",
+                validation: (code) => code.includes('filter') && code.includes('500')
+            },
+            {
+                level: 2,
+                id: 18,
+                title: "Encontrar Produto Específico",
+                jeff: "Um cliente procura o primeiro produto que custa exatamente R$ 599. Use find().",
+                tutorial: "O método find() retorna o PRIMEIRO elemento que satisfaz a condição.",
+                tutorialCode: "const usuarios = [{id: 1, nome: 'Ana'}, {id: 2, nome: 'Bob'}];\nconst encontrado = usuarios.find(user => user.id === 2);",
+                hints: ["Use find()", "Compare com === 599"],
+                initialCode: "const precos = [299, 599, 450, 799, 599];\n\n// Encontre o primeiro preço que é exatamente 599",
+                validation: (code) => code.includes('find') && code.includes('599')
+            },
+            {
+                level: 2,
+                id: 19,
+                title: "Listar Nomes de Clientes",
+                jeff: "Tenho uma lista de objetos de clientes. Extraia apenas os nomes usando map().",
+                tutorial: "Quando temos array de objetos, podemos usar map() para extrair apenas uma propriedade.",
+                tutorialCode: "const produtos = [{nome: 'Mouse', preco: 50}];\nconst nomes = produtos.map(p => p.nome);",
+                hints: ["Use map(cliente => cliente.nome)"],
+                initialCode: "const clientes = [\n  {id: 1, nome: 'João', idade: 30},\n  {id: 2, nome: 'Maria', idade: 25},\n  {id: 3, nome: 'Pedro', idade: 35}\n];\n\n// Extraia apenas os nomes",
+                validation: (code) => code.includes('map') && code.includes('.nome')
+            },
+            {
+                level: 2,
+                id: 20,
+                title: "Verificar Estoque Baixo",
+                jeff: "Preciso saber se ALGUM produto tem estoque abaixo de 5 unidades. Use some().",
+                tutorial: "O método some() retorna true se PELO MENOS UM elemento passar no teste.",
+                tutorialCode: "const numeros = [1, 2, 3, 4, 5];\nconst temPar = numeros.some(n => n % 2 === 0);",
+                hints: ["Use some()", "Teste < 5"],
+                initialCode: "const estoques = [10, 15, 3, 20, 8];\n\n// Verifique se algum estoque é menor que 5",
+                validation: (code) => code.includes('some') && code.includes('< 5')
+            },
+            {
+                level: 2,
+                id: 21,
+                title: "Validar Todos Maiores de Idade",
+                jeff: "Preciso verificar se TODOS os usuários são maiores de 18 anos. Use every().",
+                tutorial: "O método every() retorna true apenas se TODOS os elementos passarem no teste.",
+                tutorialCode: "const numeros = [2, 4, 6, 8];\nconst todosPares = numeros.every(n => n % 2 === 0);",
+                hints: ["Use every()", "Teste >= 18"],
+                initialCode: "const idades = [20, 25, 30, 22, 19];\n\n// Verifique se todos são maiores de 18",
+                validation: (code) => code.includes('every') && code.includes('18')
+            },
+            {
+                level: 2,
+                id: 22,
+                title: "Percorrer e Exibir",
+                jeff: "Mostre cada produto no console usando forEach().",
+                tutorial: "O método forEach() executa uma função para cada elemento.",
+                tutorialCode: "const nomes = ['Ana', 'Bob'];\nnomes.forEach(nome => console.log(nome));",
+                hints: ["Use forEach()"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor'];\n\n// Mostre cada produto",
+                validation: (code) => code.includes('forEach')
+            },
+            {
+                level: 2,
+                id: 23,
+                title: "Encontrar Índice Específico",
+                jeff: "Preciso saber a posição do primeiro produto com preço acima de 1000. Use findIndex().",
+                tutorial: "O método findIndex() retorna o ÍNDICE do primeiro elemento que passa no teste.",
+                tutorialCode: "const nums = [5, 10, 15, 20];\nconst indice = nums.findIndex(n => n > 12);",
+                hints: ["Use findIndex()", "Teste > 1000"],
+                initialCode: "const precos = [299, 599, 1200, 450, 1500];\n\n// Encontre o índice do primeiro preço acima de 1000",
+                validation: (code) => code.includes('findIndex') && code.includes('1000')
+            },
+            {
+                level: 2,
+                id: 24,
+                title: "Filtrar Usuários Ativos",
+                jeff: "Da lista de usuários, filtre apenas os que têm status 'ativo'.",
+                tutorial: "Combine filter() com objetos para filtrar por propriedades.",
+                tutorialCode: "const users = [{nome: 'Ana', ativo: true}];\nconst ativos = users.filter(u => u.ativo);",
+                hints: ["Use filter()", "Acesse .status"],
+                initialCode: "const usuarios = [\n  {nome: 'João', status: 'ativo'},\n  {nome: 'Maria', status: 'inativo'},\n  {nome: 'Pedro', status: 'ativo'}\n];\n\n// Filtre apenas ativos",
+                validation: (code) => code.includes('filter') && code.includes('status')
+            },
+            {
+                level: 2,
+                id: 25,
+                title: "Transformar Emails em Minúsculas",
+                jeff: "Padronize todos os emails convertendo para minúsculas usando map().",
+                tutorial: "Use map() com métodos de string como toLowerCase().",
+                tutorialCode: "const nomes = ['ANA', 'BOB'];\nconst minusculas = nomes.map(n => n.toLowerCase());",
+                hints: ["Use map()", "Use toLowerCase()"],
+                initialCode: "const emails = ['JOAO@email.com', 'MARIA@Email.COM', 'pedro@EMAIL.com'];\n\n// Converta todos para minúsculas",
+                validation: (code) => code.includes('map') && code.includes('toLowerCase')
+            },
+
+            // NÍVEL 3 - INTER-AVANÇADO
+            {
+                level: 3,
+                id: 26,
+                title: "Extrair Parte da Lista",
+                jeff: "Preciso dos produtos da posição 2 até a 5. Use slice().",
+                tutorial: "O método slice(inicio, fim) extrai uma porção do array.",
+                tutorialCode: "const letras = ['a', 'b', 'c', 'd', 'e'];\nconst parte = letras.slice(1, 3);",
+                hints: ["Use slice(2, 5)"],
+                initialCode: "const produtos = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];\n\n// Extraia da posição 2 até 5",
+                validation: (code) => code.includes('slice') && code.includes('2')
+            },
+            {
+                level: 3,
+                id: 27,
+                title: "Remover e Adicionar Items",
+                jeff: "Na posição 2, remova 1 item e adicione 'Novo Produto'. Use splice().",
+                tutorial: "O método splice(indice, quantidade, ...novos) remove E/OU adiciona elementos.",
+                tutorialCode: "const nums = [1, 2, 3, 4];\nnums.splice(1, 2, 'X', 'Y');",
+                hints: ["Use splice(2, 1, 'Novo Produto')"],
+                initialCode: "const produtos = ['A', 'B', 'C', 'D', 'E'];\n\n// Use splice na posição 2",
+                validation: (code) => code.includes('splice') && code.includes('Novo Produto')
+            },
+            {
+                level: 3,
+                id: 28,
+                title: "Ordenar Preços Crescente",
+                jeff: "Ordene os preços do menor para o maior usando sort().",
+                tutorial: "Para números, sort() precisa de: (a, b) => a - b",
+                tutorialCode: "const nums = [3, 1, 4, 2];\nnums.sort((a, b) => a - b);",
+                hints: ["Use sort((a, b) => a - b)"],
+                initialCode: "const precos = [299, 599, 150, 1200, 450];\n\n// Ordene do menor para o maior",
+                validation: (code) => code.includes('sort') && code.includes('=>')
+            },
+            {
+                level: 3,
+                id: 29,
+                title: "Ordenar por Nome",
+                jeff: "Ordene os produtos alfabeticamente por nome usando sort().",
+                tutorial: "Para strings em objetos, use localeCompare().",
+                tutorialCode: "const objs = [{n: 'Bob'}, {n: 'Ana'}];\nobjs.sort((a, b) => a.n.localeCompare(b.n));",
+                hints: ["Use sort()", "Use localeCompare()"],
+                initialCode: "const produtos = [\n  {nome: 'Zebra', preco: 100},\n  {nome: 'Abelha', preco: 200},\n  {nome: 'Macaco', preco: 150}\n];\n\n// Ordene alfabeticamente",
+                validation: (code) => code.includes('sort') && code.includes('localeCompare')
+            },
+            {
+                level: 3,
+                id: 30,
+                title: "Inverter Ordem",
+                jeff: "Inverta a ordem completa da lista usando reverse().",
+                tutorial: "O método reverse() inverte a ordem dos elementos.",
+                tutorialCode: "const nums = [1, 2, 3];\nnums.reverse();",
+                hints: ["Use reverse()"],
+                initialCode: "const produtos = ['Primeiro', 'Segundo', 'Terceiro', 'Quarto'];\n\n// Inverta a ordem",
+                validation: (code) => code.includes('reverse')
+            },
+            {
+                level: 3,
+                id: 31,
+                title: "Converter Array em String",
+                jeff: "Converta o array de tags em uma string separada por vírgulas usando join().",
+                tutorial: "O método join(separador) junta todos elementos em uma string.",
+                tutorialCode: "const palavras = ['Olá', 'mundo'];\nconst frase = palavras.join(' ');",
+                hints: ["Use join(', ')"],
+                initialCode: "const tags = ['javascript', 'arrays', 'programação', 'web'];\n\n// Converta em string",
+                validation: (code) => code.includes('join')
+            },
+            {
+                level: 3,
+                id: 32,
+                title: "Achatar Array Aninhado",
+                jeff: "Tenho arrays dentro de arrays. Use flat() para achatar.",
+                tutorial: "O método flat(profundidade) 'achata' arrays aninhados.",
+                tutorialCode: "const aninhado = [1, [2, 3], [4, [5]]];\nconst achatado = aninhado.flat();",
+                hints: ["Use flat()"],
+                initialCode: "const categorias = [\n  ['Eletrônicos', ['Notebooks', 'Tablets']],\n  ['Livros', ['Ficção', 'Técnicos']]\n];\n\n// Achate completamente",
+                validation: (code) => code.includes('flat')
+            },
+            {
+                level: 3,
+                id: 33,
+                title: "Mapear e Achatar",
+                jeff: "Cada produto tem variações. Use flatMap() para obter todas as variações.",
+                tutorial: "O método flatMap() = map() + flat().",
+                tutorialCode: "const nums = [1, 2];\nconst resultado = nums.flatMap(n => [n, n * 2]);",
+                hints: ["Use flatMap()"],
+                initialCode: "const produtos = [\n  {nome: 'Camiseta', variacoes: ['P', 'M', 'G']},\n  {nome: 'Calça', variacoes: ['38', '40', '42']}\n];\n\n// Obtenha todas variações",
+                validation: (code) => code.includes('flatMap')
+            },
+            {
+                level: 3,
+                id: 34,
+                title: "Filtrar e Mapear",
+                jeff: "Pegue produtos com preço > 500 e retorne apenas nomes. Use filter() e map().",
+                tutorial: "Podemos encadear métodos de array.",
+                tutorialCode: "const nums = [1, 2, 3, 4];\nconst resultado = nums.filter(n => n > 2).map(n => n * 10);",
+                hints: ["Use filter().map()"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', preco: 50},\n  {nome: 'Teclado', preco: 600},\n  {nome: 'Monitor', preco: 1200}\n];\n\n// Filtre > 500 e retorne nomes",
+                validation: (code) => code.includes('filter') && code.includes('map')
+            },
+            {
+                level: 3,
+                id: 35,
+                title: "Remover Duplicatas",
+                jeff: "Temos produtos repetidos. Remova duplicatas usando Set.",
+                tutorial: "Set é uma estrutura que só mantém valores únicos.",
+                tutorialCode: "const nums = [1, 2, 2, 3, 3, 3];\nconst unicos = [...new Set(nums)];",
+                hints: ["Use new Set()", "Use spread ..."],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Mouse', 'Monitor', 'Teclado'];\n\n// Remova duplicatas",
+                validation: (code) => code.includes('Set') && code.includes('...')
+            },
+
+            // NÍVEL 4 - AVANÇADO
+            {
+                level: 4,
+                id: 36,
+                title: "Calcular Total de Vendas",
+                jeff: "Calcule o valor total de todas as vendas usando reduce().",
+                tutorial: "O reduce() reduz um array a um único valor.",
+                tutorialCode: "const nums = [1, 2, 3, 4];\nconst soma = nums.reduce((acc, num) => acc + num, 0);",
+                hints: ["Use reduce()", "Comece com 0"],
+                initialCode: "const vendas = [100, 250, 180, 420, 90];\n\n// Calcule o total",
+                validation: (code) => code.includes('reduce')
+            },
+            {
+                level: 4,
+                id: 37,
+                title: "Contar Ocorrências",
+                jeff: "Conte quantas vezes cada produto aparece usando reduce().",
+                tutorial: "Use reduce() para criar objetos contadores.",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'maçã'];\nconst contador = frutas.reduce((acc, fruta) => {\n  acc[fruta] = (acc[fruta] || 0) + 1;\n  return acc;\n}, {});",
+                hints: ["Use reduce() com {}"],
+                initialCode: "const vendas = ['Mouse', 'Teclado', 'Mouse', 'Monitor', 'Mouse'];\n\n// Conte ocorrências",
+                validation: (code) => code.includes('reduce') && code.includes('||')
+            },
+            {
+                level: 4,
+                id: 38,
+                title: "Agrupar por Categoria",
+                jeff: "Agrupe os produtos por categoria usando reduce().",
+                tutorial: "reduce() pode criar objetos complexos agrupando elementos.",
+                tutorialCode: "const items = [{tipo: 'A', val: 1}, {tipo: 'B', val: 2}];\nconst grupos = items.reduce((acc, item) => {\n  if (!acc[item.tipo]) acc[item.tipo] = [];\n  acc[item.tipo].push(item);\n  return acc;\n}, {});",
+                hints: ["Use reduce()", "Crie arrays para cada categoria"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', categoria: 'Periféricos'},\n  {nome: 'Notebook', categoria: 'Computadores'},\n  {nome: 'Teclado', categoria: 'Periféricos'}\n];\n\n// Agrupe por categoria",
+                validation: (code) => code.includes('reduce') && code.includes('categoria')
+            },
+            {
+                level: 4,
+                id: 39,
+                title: "Calcular Média de Avaliações",
+                jeff: "Calcule a média das avaliações usando reduce().",
+                tutorial: "Para calcular média: some tudo e divida pelo length.",
+                tutorialCode: "const nums = [10, 20, 30];\nconst media = nums.reduce((acc, n) => acc + n, 0) / nums.length;",
+                hints: ["Use reduce()", "Divida por length"],
+                initialCode: "const avaliacoes = [4.5, 3.8, 4.2, 4.9, 3.5];\n\n// Calcule a média",
+                validation: (code) => code.includes('reduce') && code.includes('length')
+            },
+            {
+                level: 4,
+                id: 40,
+                title: "Encontrar Produto Mais Caro",
+                jeff: "Use reduce() para encontrar o produto com maior preço.",
+                tutorial: "reduce() pode comparar e manter o maior valor.",
+                tutorialCode: "const nums = [5, 10, 3, 8];\nconst maior = nums.reduce((max, n) => n > max ? n : max);",
+                hints: ["Use reduce()", "Compare preços"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', preco: 50},\n  {nome: 'Monitor', preco: 1200},\n  {nome: 'Teclado', preco: 150}\n];\n\n// Encontre o mais caro",
+                validation: (code) => code.includes('reduce') && code.includes('preco')
+            },
+            {
+                level: 4,
+                id: 41,
+                title: "Criar Objeto Lookup",
+                jeff: "Transforme o array em um objeto onde a chave é o ID.",
+                tutorial: "reduce() pode criar objetos de lookup.",
+                tutorialCode: "const users = [{id: 1, n: 'Ana'}];\nconst lookup = users.reduce((acc, u) => {\n  acc[u.id] = u;\n  return acc;\n}, {});",
+                hints: ["Use reduce()", "acc[item.id] = item"],
+                initialCode: "const usuarios = [\n  {id: 101, nome: 'João'},\n  {id: 102, nome: 'Maria'},\n  {id: 103, nome: 'Pedro'}\n];\n\n// Crie objeto lookup",
+                validation: (code) => code.includes('reduce') && code.includes('.id')
+            },
+            {
+                level: 4,
+                id: 42,
+                title: "Pipeline Complexo",
+                jeff: "Filtre disponíveis, aplique 15% desconto, ordene por preço e pegue os 3 primeiros.",
+                tutorial: "Encadear múltiplos métodos cria pipelines poderosos.",
+                tutorialCode: "const resultado = array\n  .filter(x => x.ativo)\n  .map(x => ({...x, preco: x.preco * 0.9}))\n  .sort((a, b) => a.preco - b.preco)\n  .slice(0, 5);",
+                hints: ["Encadeie: filter -> map -> sort -> slice"],
+                initialCode: "const produtos = [\n  {nome: 'A', preco: 100, disponivel: true},\n  {nome: 'B', preco: 200, disponivel: false},\n  {nome: 'C', preco: 150, disponivel: true},\n  {nome: 'D', preco: 80, disponivel: true}\n];\n\n// Complete o pipeline",
+                validation: (code) => code.includes('filter') && code.includes('map') && code.includes('sort') && code.includes('slice')
+            },
+            {
+                level: 4,
+                id: 43,
+                title: "Desestruturação em Filter",
+                jeff: "Use desestruturação para filtrar usuários ativos de forma mais limpa.",
+                tutorial: "Podemos desestruturar parâmetros nas arrow functions.",
+                tutorialCode: "const users = [{nome: 'Ana', ativo: true}];\nconst ativos = users.filter(({ativo}) => ativo);",
+                hints: ["Use filter(({propriedade}) => ...)"],
+                initialCode: "const usuarios = [\n  {nome: 'João', ativo: true, status: 'premium'},\n  {nome: 'Maria', ativo: false, status: 'free'},\n  {nome: 'Pedro', ativo: true, status: 'premium'}\n];\n\n// Filtre ativos E premium",
+                validation: (code) => code.includes('filter') && code.includes('{') && code.includes('}')
+            },
+            {
+                level: 4,
+                id: 44,
+                title: "Spread para Atualizar",
+                jeff: "Atualize o preço de todos produtos usando map e spread operator.",
+                tutorial: "Spread (...) copia propriedades, permitindo atualizar algumas.",
+                tutorialCode: "const produtos = [{nome: 'A', preco: 10}];\nconst atualizados = produtos.map(p => ({...p, preco: p.preco * 1.1}));",
+                hints: ["Use map()", "Use spread ..."],
+                initialCode: "const produtos = [\n  {id: 1, nome: 'Mouse', preco: 50, estoque: 10},\n  {id: 2, nome: 'Teclado', preco: 150, estoque: 5}\n];\n\n// Aumente preços em 20%",
+                validation: (code) => code.includes('map') && code.includes('...') && code.includes('preco')
+            },
+            {
+                level: 4,
+                id: 45,
+                title: "Rest Parameters",
+                jeff: "Crie desestruturação com primeiro elemento separado e resto em array.",
+                tutorial: "Rest parameters (...rest) captura elementos restantes.",
+                tutorialCode: "const [primeiro, ...resto] = [1, 2, 3, 4];\nconsole.log(primeiro); // 1\nconsole.log(resto); // [2, 3, 4]",
+                hints: ["Use [primeiro, ...resto] = array"],
+                initialCode: "const numeros = [10, 20, 30, 40, 50];\n\n// Desestruture: primeiro separado, resto em array",
+                validation: (code) => code.includes('...') && code.includes('[')
+            },
+            {
+                level: 4,
+                id: 46,
+                title: "Combinar Múltiplos Arrays",
+                jeff: "Combine 3 arrays de diferentes fornecedores usando spread.",
+                tutorial: "Spread operator pode combinar múltiplos arrays.",
+                tutorialCode: "const a = [1, 2];\nconst b = [3, 4];\nconst c = [5, 6];\nconst todos = [...a, ...b, ...c];",
+                hints: ["Use [...array1, ...array2, ...array3]"],
+                initialCode: "const fornecedor1 = ['Mouse', 'Teclado'];\nconst fornecedor2 = ['Monitor', 'Webcam'];\nconst fornecedor3 = ['Headset', 'Microfone'];\n\n// Combine os três arrays",
+                validation: (code) => code.includes('...') && code.match(/\.\.\./g).length >= 3
+            },
+            {
+                level: 4,
+                id: 47,
+                title: "Achatar Profundamente",
+                jeff: "Tenho arrays aninhados em múltiplos níveis. Achate tudo usando flat(Infinity).",
+                tutorial: "flat(Infinity) achata arrays independente da profundidade.",
+                tutorialCode: "const profundo = [1, [2, [3, [4, [5]]]]];\nconst plano = profundo.flat(Infinity);",
+                hints: ["Use flat(Infinity)"],
+                initialCode: "const categorias = [\n  'Eletrônicos',\n  ['Computadores', ['Notebooks', 'Desktops']],\n  ['Periféricos', ['Mouse', ['Com fio', 'Sem fio']]]\n];\n\n// Achate completamente",
+                validation: (code) => code.includes('flat') && code.includes('Infinity')
+            },
+            {
+                level: 4,
+                id: 48,
+                title: "Calcular Desconto Progressivo",
+                jeff: "Aplique descontos progressivos: 5% no primeiro, 10% no segundo, 15% no terceiro.",
+                tutorial: "map() recebe (elemento, índice) como parâmetros.",
+                tutorialCode: "const nums = [100, 200, 300];\nconst result = nums.map((n, i) => n - (n * i * 0.05));",
+                hints: ["Use map((preco, indice) => ...)", "Desconto = índice * 5%"],
+                initialCode: "const precos = [1000, 2000, 3000, 4000];\n\n// Aplique: 0%, 5%, 10%, 15%",
+                validation: (code) => code.includes('map') && code.includes(',') && (code.includes('indice') || code.includes('i'))
+            },
+            {
+                level: 4,
+                id: 49,
+                title: "Filtrar Pares e Elevar ao Quadrado",
+                jeff: "Pegue apenas números pares e eleve cada um ao quadrado.",
+                tutorial: "Combinar filter e map é um padrão comum.",
+                tutorialCode: "const nums = [1, 2, 3, 4, 5];\nconst resultado = nums.filter(n => n % 2 === 0).map(n => n ** 2);",
+                hints: ["Use filter() depois map()", "Use ** 2 ou * n"],
+                initialCode: "const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\n// Filtre pares e eleve ao quadrado",
+                validation: (code) => code.includes('filter') && code.includes('map') && (code.includes('**') || code.includes('* n'))
+            },
+            {
+                level: 4,
+                id: 50,
+                title: "Criar Relatório de Vendas",
+                jeff: "Gere um relatório: total de vendas, produto mais vendido e média de preços.",
+                tutorial: "Para análises complexas, use reduce() múltiplas vezes.",
+                tutorialCode: "const vendas = [{p: 'A', v: 10}, {p: 'B', v: 20}];\nconst total = vendas.reduce((acc, v) => acc + v.v, 0);",
+                hints: ["Use reduce para somar", "Use reduce para contar"],
+                initialCode: "const vendas = [\n  {produto: 'Mouse', valor: 50, quantidade: 3},\n  {produto: 'Teclado', valor: 150, quantidade: 2},\n  {produto: 'Mouse', valor: 50, quantidade: 2}\n];\n\n// Calcule: total, mais vendido, média",
+                validation: (code) => code.includes('reduce')
+            },
+            {
+                level: 4,
+                id: 51,
+                title: "Paginar Resultados",
+                jeff: "Implemente paginação: pegue página 2 com 3 itens por página.",
+                tutorial: "Paginação: skip = (pagina - 1) * itensPorPagina.",
+                tutorialCode: "const items = [1, 2, 3, 4, 5, 6, 7, 8];\nconst pagina = 2, porPagina = 3;\nconst inicio = (pagina - 1) * porPagina;\nconst resultado = items.slice(inicio, inicio + porPagina);",
+                hints: ["Calcule índice inicial", "Use slice()"],
+                initialCode: "const produtos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];\nconst paginaAtual = 2;\nconst itensPorPagina = 3;\n\n// Retorne os itens da página 2",
+                validation: (code) => code.includes('slice') && (code.includes('-1') || code.includes('- 1'))
+            },
+            {
+                level: 4,
+                id: 52,
+                title: "Remover Elementos Específicos",
+                jeff: "Remova todos os produtos com estoque 0 usando filter.",
+                tutorial: "filter() cria novo array sem os elementos que retornam false.",
+                tutorialCode: "const nums = [0, 1, 0, 2, 0, 3];\nconst semZeros = nums.filter(n => n !== 0);",
+                hints: ["Use filter()", "Teste !== 0 ou > 0"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', estoque: 5},\n  {nome: 'Teclado', estoque: 0},\n  {nome: 'Monitor', estoque: 3},\n  {nome: 'Webcam', estoque: 0}\n];\n\n// Remova produtos sem estoque",
+                validation: (code) => code.includes('filter') && code.includes('estoque')
+            },
+            {
+                level: 4,
+                id: 53,
+                title: "Encontrar Interseção de Arrays",
+                jeff: "Encontre produtos que aparecem em ambos arrays (interseção).",
+                tutorial: "Interseção: elementos que existem em ambos arrays.",
+                tutorialCode: "const a = [1, 2, 3, 4];\nconst b = [3, 4, 5, 6];\nconst intersecao = a.filter(item => b.includes(item));",
+                hints: ["Use filter() e includes()"],
+                initialCode: "const estoque1 = ['Mouse', 'Teclado', 'Monitor', 'Webcam'];\nconst estoque2 = ['Teclado', 'Headset', 'Monitor', 'Microfone'];\n\n// Encontre produtos em ambos estoques",
+                validation: (code) => code.includes('filter') && code.includes('includes')
+            },
+            {
+                level: 4,
+                id: 54,
+                title: "Diferença entre Arrays",
+                jeff: "Encontre produtos que estão no primeiro array mas NÃO no segundo.",
+                tutorial: "Diferença: elementos no primeiro mas não no segundo.",
+                tutorialCode: "const a = [1, 2, 3, 4];\nconst b = [3, 4, 5, 6];\nconst diferenca = a.filter(item => !b.includes(item));",
+                hints: ["Use filter() e !includes()"],
+                initialCode: "const pedido = ['Mouse', 'Teclado', 'Monitor', 'Webcam'];\nconst entregue = ['Teclado', 'Monitor'];\n\n// Encontre o que ainda não foi entregue",
+                validation: (code) => code.includes('filter') && code.includes('!') && code.includes('includes')
+            },
+            {
+                level: 4,
+                id: 55,
+                title: "Agrupar e Somar por Categoria",
+                jeff: "Agrupe vendas por categoria e some o total de cada.",
+                tutorial: "Use reduce para criar objeto onde chaves são categorias e valores são totais.",
+                tutorialCode: "const vendas = [{cat: 'A', val: 10}, {cat: 'A', val: 20}];\nconst totais = vendas.reduce((acc, v) => {\n  acc[v.cat] = (acc[v.cat] || 0) + v.val;\n  return acc;\n}, {});",
+                hints: ["Use reduce() com {}", "acc[categoria] = (acc[categoria] || 0) + valor"],
+                initialCode: "const vendas = [\n  {categoria: 'Eletrônicos', valor: 1500},\n  {categoria: 'Livros', valor: 200},\n  {categoria: 'Eletrônicos', valor: 800},\n  {categoria: 'Roupas', valor: 400},\n  {categoria: 'Livros', valor: 150}\n];\n\n// Agrupe e some por categoria",
+                validation: (code) => code.includes('reduce') && code.includes('categoria')
+            },
+            {
+                level: 4,
+                id: 56,
+                title: "Calcular Crescimento Percentual",
+                jeff: "Compare vendas de dois meses e calcule o crescimento percentual.",
+                tutorial: "Crescimento % = ((novo - antigo) / antigo) * 100",
+                tutorialCode: "const antes = [100, 200];\nconst depois = [120, 250];\nconst crescimento = depois.map((novo, i) => ((novo - antes[i]) / antes[i] * 100).toFixed(2) + '%');",
+                hints: ["Use map com índice", "Formula: (novo - antigo) / antigo * 100"],
+                initialCode: "const janeiro = [1000, 2000, 1500];\nconst fevereiro = [1200, 1800, 1650];\n\n// Calcule crescimento percentual",
+                validation: (code) => code.includes('map') && (code.includes('100') || code.includes('*100'))
+            },
+            {
+                level: 4,
+                id: 57,
+                title: "Top N Produtos",
+                jeff: "Retorne os 5 produtos mais caros usando sort e slice.",
+                tutorial: "Ordenar decrescente + slice(0, n) = top N elementos.",
+                tutorialCode: "const nums = [5, 2, 8, 1, 9];\nconst top3 = nums.sort((a, b) => b - a).slice(0, 3);",
+                hints: ["Use sort((a, b) => b - a)", "Depois slice(0, 5)"],
+                initialCode: "const produtos = [\n  {nome: 'A', preco: 150},\n  {nome: 'B', preco: 800},\n  {nome: 'C', preco: 300},\n  {nome: 'D', preco: 1200},\n  {nome: 'E', preco: 450},\n  {nome: 'F', preco: 950},\n  {nome: 'G', preco: 200}\n];\n\n// Retorne os 5 mais caros",
+                validation: (code) => code.includes('sort') && code.includes('slice') && code.includes('5')
+            },
+            {
+                level: 4,
+                id: 58,
+                title: "Validar Dados Completos",
+                jeff: "Verifique se TODOS os produtos têm nome, preço e estoque preenchidos.",
+                tutorial: "every() com múltiplas condições: todas devem ser true.",
+                tutorialCode: "const users = [{nome: 'Ana', email: 'a@b.com'}];\nconst validos = users.every(u => u.nome && u.email);",
+                hints: ["Use every()", "Teste p.nome && p.preco && p.estoque"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', preco: 50, estoque: 10},\n  {nome: 'Teclado', preco: 150, estoque: 0},\n  {nome: '', preco: 200, estoque: 5}\n];\n\n// Verifique se todos têm dados completos",
+                validation: (code) => code.includes('every') && code.includes('&&')
+            },
+            {
+                level: 4,
+                id: 59,
+                title: "Buscar Aninhado",
+                jeff: "Encontre o primeiro pedido que contém um produto específico.",
+                tutorial: "Para buscar em estruturas aninhadas, use find() com some().",
+                tutorialCode: "const pedidos = [{id: 1, items: ['A', 'B']}];\nconst encontrado = pedidos.find(p => p.items.some(item => item === 'B'));",
+                hints: ["Use find() externo", "Use some() interno"],
+                initialCode: "const pedidos = [\n  {id: 1, produtos: ['Mouse', 'Teclado']},\n  {id: 2, produtos: ['Monitor', 'Webcam']},\n  {id: 3, produtos: ['Headset', 'Mouse']}\n];\n\n// Encontre o primeiro pedido que contém 'Monitor'",
+                validation: (code) => code.includes('find') && code.includes('some')
+            },
+            {
+                level: 4,
+                id: 60,
+                title: "Atualizar Objeto Aninhado",
+                jeff: "Aumente o estoque de um produto específico dentro de um array de categorias.",
+                tutorial: "Para atualizar objetos aninhados, use map + spread em múltiplos níveis.",
+                tutorialCode: "const cats = [{nome: 'A', prods: [{id: 1, est: 5}]}];\nconst updated = cats.map(cat => ({...cat, prods: cat.prods.map(p => p.id === 1 ? {...p, est: p.est + 10} : p)}));",
+                hints: ["Use map na categoria", "Use map nos produtos", "Use ternário"],
+                initialCode: "const categorias = [\n  {\n    nome: 'Eletrônicos',\n    produtos: [\n      {id: 1, nome: 'Mouse', estoque: 5},\n      {id: 2, nome: 'Teclado', estoque: 3}\n    ]\n  }\n];\n\n// Aumente em 10 o estoque do produto id 2",
+                validation: (code) => code.includes('map') && code.includes('...') && code.includes('?')
+            },
+            {
+                level: 4,
+                id: 61,
+                title: "Calcular Carrinho de Compras",
+                jeff: "Calcule o valor total do carrinho (produto.preco * item.quantidade).",
+                tutorial: "Para calcular totais de carrinho, multiplique preço × quantidade e some.",
+                tutorialCode: "const items = [{preco: 10, qtd: 2}, {preco: 20, qtd: 3}];\nconst total = items.reduce((acc, item) => acc + (item.preco * item.qtd), 0);",
+                hints: ["Use reduce()", "Some: item.preco * item.quantidade"],
+                initialCode: "const carrinho = [\n  {produto: 'Mouse', preco: 50, quantidade: 2},\n  {produto: 'Teclado', preco: 150, quantidade: 1},\n  {produto: 'Monitor', preco: 800, quantidade: 1}\n];\n\n// Calcule o valor total",
+                validation: (code) => code.includes('reduce') && code.includes('*')
+            },
+            {
+                level: 4,
+                id: 62,
+                title: "Juntar Strings com Formatação",
+                jeff: "Crie uma frase listando todos produtos separados por vírgula e 'e' antes do último.",
+                tutorial: "Para formatação personalizada, combine slice, join e concatenação.",
+                tutorialCode: "const items = ['A', 'B', 'C'];\nconst texto = items.slice(0, -1).join(', ') + ' e ' + items[items.length - 1];",
+                hints: ["Use slice(0, -1)", "Use join(', ')", "Concatene ' e ' + último"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor', 'Webcam'];\n\n// Crie: 'Mouse, Teclado, Monitor e Webcam'",
+                validation: (code) => code.includes('slice') && code.includes('join') && code.includes(' e ')
+            },
+            {
+                level: 4,
+                id: 63,
+                title: "Média Ponderada",
+                jeff: "Calcule a média ponderada das notas (nota * peso).",
+                tutorial: "Média ponderada: soma(valor × peso) / soma(pesos)",
+                tutorialCode: "const notas = [{val: 8, peso: 2}, {val: 7, peso: 3}];\nconst somaP = notas.reduce((acc, n) => acc + (n.val * n.peso), 0);\nconst somaPesos = notas.reduce((acc, n) => acc + n.peso, 0);\nconst media = somaP / somaPesos;",
+                hints: ["Use reduce para soma ponderada", "Use reduce para soma de pesos", "Divida"],
+                initialCode: "const avaliacoes = [\n  {nota: 8, peso: 2},\n  {nota: 7, peso: 3},\n  {nota: 9, peso: 5}\n];\n\n// Calcule a média ponderada",
+                validation: (code) => code.includes('reduce') && code.includes('*') && code.includes('/')
+            },
+            {
+                level: 4,
+                id: 64,
+                title: "Matriz para Objeto",
+                jeff: "Converta array de arrays [[chave, valor]] em objeto.",
+                tutorial: "Formato [[k1, v1], [k2, v2]] pode ser convertido em {k1: v1, k2: v2}",
+                tutorialCode: "const pares = [['nome', 'Ana'], ['idade', 25]];\nconst obj = pares.reduce((acc, [chave, valor]) => {\n  acc[chave] = valor;\n  return acc;\n}, {});",
+                hints: ["Use reduce() com {}", "Desestruture [chave, valor]"],
+                initialCode: "const dados = [\n  ['produto', 'Mouse'],\n  ['preco', 50],\n  ['estoque', 10],\n  ['categoria', 'Periféricos']\n];\n\n// Converta em objeto",
+                validation: (code) => code.includes('reduce') && code.includes('[')
+            },
+            {
+                level: 4,
+                id: 65,
+                title: "Pipeline Final Completo",
+                jeff: "DESAFIO FINAL! Filtre produtos ativos e em estoque, aplique desconto de 20%, agrupe por categoria, calcule total por categoria e ordene categorias por total decrescente.",
+                tutorial: "Este exercício combina tudo que você aprendeu! Use filter, map, reduce e sort.",
+                tutorialCode: "// Pipeline completo:\narray\n  .filter(condicoes)\n  .map(transformacao)\n  .reduce(agrupamento)\n  // Depois processar resultado",
+                hints: ["1. Filter: ativo === true && estoque > 0", "2. Map: aplique desconto", "3. Reduce: agrupe por categoria", "4. Ordene resultado"],
+                initialCode: "const produtos = [\n  {nome: 'Mouse', preco: 100, categoria: 'Periféricos', ativo: true, estoque: 5},\n  {nome: 'Teclado', preco: 200, categoria: 'Periféricos', ativo: true, estoque: 0},\n  {nome: 'Monitor', preco: 1000, categoria: 'Monitores', ativo: true, estoque: 3},\n  {nome: 'Webcam', preco: 300, categoria: 'Periféricos', ativo: false, estoque: 10},\n  {nome: 'TV', preco: 2000, categoria: 'Monitores', ativo: true, estoque: 2}\n];\n\n// Complete o desafio final!",
+                validation: (code) => code.includes('filter') && code.includes('map') && code.includes('reduce')
+            },
+            // Exercícios extras 66-75
+            {
+                level: 1,
+                id: 66,
+                title: "Array de Números",
+                jeff: "Crie um array com os números de 1 a 5 e mostre no console.",
+                tutorial: "Arrays podem conter números sem aspas.",
+                tutorialCode: "const numeros = [1, 2, 3, 4, 5];\nconsole.log(numeros);",
+                hints: ["Use const numeros = [1, 2, 3, 4, 5]"],
+                initialCode: "// Crie um array com números de 1 a 5\n",
+                validation: (code) => code.includes('[1') && code.includes('5]')
+            },
+            {
+                level: 1,
+                id: 67,
+                title: "Tamanho Antes e Depois",
+                jeff: "Mostre o tamanho do array, adicione 3 itens, e mostre o novo tamanho.",
+                tutorial: "Podemos acessar length antes e depois de modificações.",
+                tutorialCode: "const arr = [1, 2];\nconsole.log('Antes:', arr.length);\narr.push(3, 4, 5);\nconsole.log('Depois:', arr.length);",
+                hints: ["Mostre length antes", "Use push para adicionar", "Mostre length depois"],
+                initialCode: "const produtos = ['Mouse', 'Teclado'];\n\n// Mostre tamanho, adicione 3 itens, mostre novo tamanho",
+                validation: (code) => code.includes('length') && code.includes('push')
+            },
+            {
+                level: 1,
+                id: 68,
+                title: "Verificar se É Array",
+                jeff: "Verifique se uma variável é realmente um array usando Array.isArray().",
+                tutorial: "Array.isArray(variavel) retorna true se for array.",
+                tutorialCode: "const arr = [1, 2, 3];\nconst num = 123;\nconsole.log(Array.isArray(arr)); // true",
+                hints: ["Use Array.isArray(variavel)"],
+                initialCode: "const lista = ['A', 'B', 'C'];\nconst numero = 42;\n\n// Verifique se cada um é array",
+                validation: (code) => code.includes('Array.isArray')
+            },
+            // NOVOS 50 EXERCÍCIOS NÍVEL 1
+            {
+                level: 1,
+                id: 76,
+                title: "Criar Array Vazio",
+                jeff: "Crie um array vazio e mostre seu tamanho (deve ser 0).",
+                tutorial: "Arrays vazios são criados com [] e têm length 0.",
+                tutorialCode: "const vazio = [];\nconsole.log(vazio.length); // 0",
+                hints: ["const vazio = []", "Use .length"],
+                initialCode: "// Crie um array vazio e mostre seu tamanho",
+                validation: (code) => code.includes('[]') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 77,
+                title: "Acessar Segundo Item",
+                jeff: "Mostre o segundo item do array (lembre-se: índice começa em 0!).",
+                tutorial: "O segundo item está no índice 1.",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'uva'];\nconsole.log(frutas[1]); // banana",
+                hints: ["Segundo item = índice 1", "Use array[1]"],
+                initialCode: "const cores = ['vermelho', 'azul', 'verde', 'amarelo'];\n\n// Mostre o segundo item",
+                validation: (code) => code.includes('[1]')
+            },
+            {
+                level: 1,
+                id: 78,
+                title: "Último Item com Length",
+                jeff: "Mostre o último item usando length - 1.",
+                tutorial: "O último índice é sempre array.length - 1.",
+                tutorialCode: "const nums = [10, 20, 30, 40];\nconsole.log(nums[nums.length - 1]); // 40",
+                hints: ["Use array[array.length - 1]"],
+                initialCode: "const animais = ['gato', 'cachorro', 'pássaro', 'peixe'];\n\n// Mostre o último animal",
+                validation: (code) => code.includes('length') && code.includes('- 1')
+            },
+            {
+                level: 1,
+                id: 79,
+                title: "Array de Frutas",
+                jeff: "Crie um array com 4 frutas diferentes e mostre a terceira.",
+                tutorial: "Escolha suas frutas favoritas!",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'laranja', 'uva'];\nconsole.log(frutas[2]);",
+                hints: ["Crie array com 4 frutas", "Terceira = índice 2"],
+                initialCode: "// Crie array de frutas e mostre a terceira",
+                validation: (code) => code.includes('[') && code.includes('[2]')
+            },
+            {
+                level: 1,
+                id: 80,
+                title: "Adicionar no Final",
+                jeff: "Tenho um array com 3 itens. Adicione mais 2 itens no final usando push.",
+                tutorial: "push() pode adicionar um ou mais itens de uma vez.",
+                tutorialCode: "const arr = [1, 2, 3];\narr.push(4, 5);\nconsole.log(arr); // [1, 2, 3, 4, 5]",
+                hints: ["Use push(item1, item2)"],
+                initialCode: "const numeros = [1, 2, 3];\n\n// Adicione 4 e 5",
+                validation: (code) => code.includes('push')
+            },
+            {
+                level: 1,
+                id: 81,
+                title: "Remover e Mostrar",
+                jeff: "Remova o último item e guarde em uma variável. Mostre o item removido.",
+                tutorial: "pop() retorna o item que foi removido.",
+                tutorialCode: "const arr = [1, 2, 3];\nconst removido = arr.pop();\nconsole.log('Removido:', removido);",
+                hints: ["const removido = array.pop()", "Mostre a variável removido"],
+                initialCode: "const letras = ['A', 'B', 'C', 'D'];\n\n// Remova o último e mostre qual foi",
+                validation: (code) => code.includes('pop()')
+            },
+            {
+                level: 1,
+                id: 82,
+                title: "Array de Nomes",
+                jeff: "Crie um array com 5 nomes de pessoas e mostre o primeiro nome.",
+                tutorial: "Arrays podem armazenar strings (textos).",
+                tutorialCode: "const nomes = ['Ana', 'Bruno', 'Carlos'];\nconsole.log(nomes[0]);",
+                hints: ["Crie array com 5 nomes", "Primeiro = índice 0"],
+                initialCode: "// Crie array de nomes e mostre o primeiro",
+                validation: (code) => code.includes('[') && code.includes('[0]')
+            },
+            {
+                level: 1,
+                id: 83,
+                title: "Tamanho do Array",
+                jeff: "Crie um array com 7 itens e mostre quantos itens ele tem.",
+                tutorial: "A propriedade length nos dá o tamanho.",
+                tutorialCode: "const dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'];\nconsole.log(dias.length); // 7",
+                hints: ["Crie array com 7 itens", "Use .length"],
+                initialCode: "// Crie array com 7 itens e mostre o tamanho",
+                validation: (code) => code.includes('[') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 84,
+                title: "Substituir Primeiro Item",
+                jeff: "Substitua o primeiro item do array por 'NOVO'.",
+                tutorial: "Podemos modificar qualquer posição: array[indice] = novoValor.",
+                tutorialCode: "const arr = ['antigo', 'b', 'c'];\narr[0] = 'novo';\nconsole.log(arr);",
+                hints: ["Use array[0] = 'NOVO'"],
+                initialCode: "const palavras = ['velha', 'palavra', 'teste'];\n\n// Substitua a primeira por 'NOVO'",
+                validation: (code) => code.includes('[0]') && code.includes('NOVO')
+            },
+            {
+                level: 1,
+                id: 85,
+                title: "Substituir Último Item",
+                jeff: "Substitua o último item do array por 'FIM'.",
+                tutorial: "Use length - 1 para acessar o último índice.",
+                tutorialCode: "const arr = ['a', 'b', 'c'];\narr[arr.length - 1] = 'z';\nconsole.log(arr);",
+                hints: ["Use array[array.length - 1] = 'FIM'"],
+                initialCode: "const itens = ['início', 'meio', 'antigo'];\n\n// Substitua o último por 'FIM'",
+                validation: (code) => code.includes('length') && code.includes('FIM')
+            },
+            {
+                level: 1,
+                id: 86,
+                title: "Adicionar no Início com Unshift",
+                jeff: "Adicione 'PRIMEIRO' no início do array.",
+                tutorial: "unshift() adiciona no começo e desloca os outros.",
+                tutorialCode: "const arr = ['b', 'c'];\narr.unshift('a');\nconsole.log(arr); // ['a', 'b', 'c']",
+                hints: ["Use unshift('PRIMEIRO')"],
+                initialCode: "const lista = ['segundo', 'terceiro'];\n\n// Adicione 'PRIMEIRO' no início",
+                validation: (code) => code.includes('unshift') && code.includes('PRIMEIRO')
+            },
+            {
+                level: 1,
+                id: 87,
+                title: "Remover do Início com Shift",
+                jeff: "Remova o primeiro item e mostre qual foi removido.",
+                tutorial: "shift() remove e retorna o primeiro elemento.",
+                tutorialCode: "const arr = ['a', 'b', 'c'];\nconst primeiro = arr.shift();\nconsole.log(primeiro); // 'a'",
+                hints: ["const primeiro = array.shift()", "Mostre o primeiro"],
+                initialCode: "const fila = ['João', 'Maria', 'Pedro'];\n\n// Remova o primeiro da fila",
+                validation: (code) => code.includes('shift()')
+            },
+            {
+                level: 1,
+                id: 88,
+                title: "Array Contém Item?",
+                jeff: "Verifique se o array contém a palavra 'JavaScript'.",
+                tutorial: "includes() retorna true se o item existir.",
+                tutorialCode: "const tecnologias = ['HTML', 'CSS', 'JavaScript'];\nconsole.log(tecnologias.includes('JavaScript')); // true",
+                hints: ["Use includes('JavaScript')"],
+                initialCode: "const linguagens = ['Python', 'Java', 'JavaScript', 'C++'];\n\n// Verifique se contém 'JavaScript'",
+                validation: (code) => code.includes('includes') && code.includes('JavaScript')
+            },
+            {
+                level: 1,
+                id: 89,
+                title: "Não Contém Item",
+                jeff: "Verifique se o array NÃO contém 'PHP'.",
+                tutorial: "Podemos usar ! para negar: !array.includes(item).",
+                tutorialCode: "const langs = ['Python', 'Java'];\nconsole.log(!langs.includes('PHP')); // true",
+                hints: ["Use !array.includes('PHP')"],
+                initialCode: "const tecnologias = ['React', 'Vue', 'Angular'];\n\n// Verifique se NÃO contém 'PHP'",
+                validation: (code) => code.includes('!') && code.includes('includes')
+            },
+            {
+                level: 1,
+                id: 90,
+                title: "Posição de um Item",
+                jeff: "Encontre em qual posição está 'Monitor' no array.",
+                tutorial: "indexOf() retorna o índice do item.",
+                tutorialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor'];\nconsole.log(produtos.indexOf('Monitor')); // 2",
+                hints: ["Use indexOf('Monitor')"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor', 'Webcam'];\n\n// Encontre a posição de 'Monitor'",
+                validation: (code) => code.includes('indexOf') && code.includes('Monitor')
+            },
+            {
+                level: 1,
+                id: 91,
+                title: "Item Não Encontrado",
+                jeff: "Tente encontrar 'Xbox' no array. indexOf retorna -1 quando não encontra.",
+                tutorial: "indexOf() retorna -1 se o item não existir.",
+                tutorialCode: "const produtos = ['PS5', 'Switch'];\nconsole.log(produtos.indexOf('Xbox')); // -1",
+                hints: ["Use indexOf('Xbox')", "Resultado será -1"],
+                initialCode: "const consoles = ['PS5', 'Switch', 'Steam Deck'];\n\n// Procure por 'Xbox'",
+                validation: (code) => code.includes('indexOf') && code.includes('Xbox')
+            },
+            {
+                level: 1,
+                id: 92,
+                title: "Juntar Dois Arrays",
+                jeff: "Una dois arrays de números usando concat.",
+                tutorial: "concat() junta arrays sem modificar os originais.",
+                tutorialCode: "const arr1 = [1, 2];\nconst arr2 = [3, 4];\nconst junto = arr1.concat(arr2);",
+                hints: ["Use array1.concat(array2)"],
+                initialCode: "const numeros1 = [1, 2, 3];\nconst numeros2 = [4, 5, 6];\n\n// Una os dois arrays",
+                validation: (code) => code.includes('concat')
+            },
+            {
+                level: 1,
+                id: 93,
+                title: "Copiar um Array",
+                jeff: "Faça uma cópia independente do array usando slice().",
+                tutorial: "slice() sem argumentos cria uma cópia.",
+                tutorialCode: "const original = [1, 2, 3];\nconst copia = original.slice();\ncopia.push(4);\nconsole.log(original); // [1, 2, 3]",
+                hints: ["Use array.slice()"],
+                initialCode: "const original = ['A', 'B', 'C'];\n\n// Crie uma cópia",
+                validation: (code) => code.includes('slice()')
+            },
+            {
+                level: 1,
+                id: 94,
+                title: "Array de Booleanos",
+                jeff: "Crie um array com 3 valores true e 2 false.",
+                tutorial: "Arrays podem conter valores booleanos (true/false).",
+                tutorialCode: "const flags = [true, false, true, false, true];",
+                hints: ["Crie: [true, true, true, false, false]"],
+                initialCode: "// Crie array com booleanos",
+                validation: (code) => code.includes('true') && code.includes('false')
+            },
+            {
+                level: 1,
+                id: 95,
+                title: "Segundo ao Último",
+                jeff: "Mostre o penúltimo item do array (segundo antes do fim).",
+                tutorial: "Penúltimo é length - 2.",
+                tutorialCode: "const arr = [1, 2, 3, 4, 5];\nconsole.log(arr[arr.length - 2]); // 4",
+                hints: ["Use array[array.length - 2]"],
+                initialCode: "const numeros = [10, 20, 30, 40, 50];\n\n// Mostre o penúltimo",
+                validation: (code) => code.includes('length') && code.includes('- 2')
+            },
+            {
+                level: 1,
+                id: 96,
+                title: "Array Crescente de 1 a 5",
+                jeff: "Crie manualmente um array [1, 2, 3, 4, 5] e mostre.",
+                tutorial: "Às vezes é mais simples criar manualmente.",
+                tutorialCode: "const numeros = [1, 2, 3, 4, 5];\nconsole.log(numeros);",
+                hints: ["Crie [1, 2, 3, 4, 5]"],
+                initialCode: "// Crie array [1, 2, 3, 4, 5]",
+                validation: (code) => code.includes('[1') && code.includes('5]')
+            },
+            {
+                level: 1,
+                id: 97,
+                title: "Todos os Índices",
+                jeff: "Mostre todos os índices do array com um loop for.",
+                tutorial: "Loop for percorre de 0 até length - 1.",
+                tutorialCode: "const arr = ['a', 'b', 'c'];\nfor (let i = 0; i < arr.length; i++) {\n  console.log(i);\n}",
+                hints: ["Use for (let i = 0; i < array.length; i++)", "console.log(i)"],
+                initialCode: "const letras = ['A', 'B', 'C', 'D'];\n\n// Mostre todos os índices (0, 1, 2, 3)",
+                validation: (code) => code.includes('for') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 98,
+                title: "Todos os Valores",
+                jeff: "Mostre todos os valores do array com um loop.",
+                tutorial: "Use array[i] dentro do loop para acessar valores.",
+                tutorialCode: "const arr = ['a', 'b', 'c'];\nfor (let i = 0; i < arr.length; i++) {\n  console.log(arr[i]);\n}",
+                hints: ["Use array[i] no console.log"],
+                initialCode: "const frutas = ['maçã', 'banana', 'uva'];\n\n// Mostre todas as frutas",
+                validation: (code) => code.includes('for') && code.includes('[i]')
+            },
+            {
+                level: 1,
+                id: 99,
+                title: "Índice e Valor Juntos",
+                jeff: "Mostre cada índice junto com seu valor: '0: maçã', '1: banana'...",
+                tutorial: "Combine i e array[i] no console.log.",
+                tutorialCode: "const arr = ['a', 'b'];\nfor (let i = 0; i < arr.length; i++) {\n  console.log(i + ': ' + arr[i]);\n}",
+                hints: ["console.log(i + ': ' + array[i])"],
+                initialCode: "const cores = ['vermelho', 'azul', 'verde'];\n\n// Mostre índice: valor",
+                validation: (code) => code.includes('for') && code.includes('[i]') && code.includes('+')
+            },
+            {
+                level: 1,
+                id: 100,
+                title: "Contar Itens",
+                jeff: "Conte quantos itens existem no array usando loop.",
+                tutorial: "Podemos contar incrementando uma variável.",
+                tutorialCode: "const arr = ['a', 'b', 'c'];\nlet count = 0;\nfor (let i = 0; i < arr.length; i++) {\n  count++;\n}\nconsole.log(count);",
+                hints: ["Crie contador = 0", "Incremente no loop"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor'];\n\n// Conte quantos produtos existem",
+                validation: (code) => code.includes('for') && (code.includes('++') || code.includes('+ 1'))
+            },
+            {
+                level: 1,
+                id: 101,
+                title: "Repetir Item 3 Vezes",
+                jeff: "Crie um array com 'X' repetido 3 vezes: ['X', 'X', 'X'].",
+                tutorial: "Você pode criar manualmente ou usar Array(n).fill().",
+                tutorialCode: "const arr = Array(3).fill('X');\nconsole.log(arr); // ['X', 'X', 'X']",
+                hints: ["Use Array(3).fill('X')"],
+                initialCode: "// Crie array com 'X' 3 vezes",
+                validation: (code) => code.includes('Array') && code.includes('fill')
+            },
+            {
+                level: 1,
+                id: 102,
+                title: "Array com Zeros",
+                jeff: "Crie um array com 5 zeros: [0, 0, 0, 0, 0].",
+                tutorial: "Use Array(n).fill(valor).",
+                tutorialCode: "const zeros = Array(5).fill(0);",
+                hints: ["Array(5).fill(0)"],
+                initialCode: "// Crie array com 5 zeros",
+                validation: (code) => code.includes('Array') && code.includes('fill') && code.includes('0')
+            },
+            {
+                level: 1,
+                id: 103,
+                title: "Primeiro Item É 'A'?",
+                jeff: "Verifique se o primeiro item é exatamente 'A'.",
+                tutorial: "Compare array[0] === 'A'.",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nconst eA = arr[0] === 'A';\nconsole.log(eA); // true",
+                hints: ["Use array[0] === 'A'"],
+                initialCode: "const letras = ['A', 'B', 'C'];\n\n// Verifique se primeiro é 'A'",
+                validation: (code) => code.includes('[0]') && code.includes('===')
+            },
+            {
+                level: 1,
+                id: 104,
+                title: "Último Item É 'Z'?",
+                jeff: "Verifique se o último item é exatamente 'Z'.",
+                tutorial: "Compare array[array.length - 1] === 'Z'.",
+                tutorialCode: "const arr = ['X', 'Y', 'Z'];\nconst eZ = arr[arr.length - 1] === 'Z';\nconsole.log(eZ);",
+                hints: ["Use array[array.length - 1] === 'Z'"],
+                initialCode: "const letras = ['X', 'Y', 'Z'];\n\n// Verifique se último é 'Z'",
+                validation: (code) => code.includes('length') && code.includes('===')
+            },
+            {
+                level: 1,
+                id: 105,
+                title: "Adicionar 2 no Início",
+                jeff: "Adicione dois itens no início: 'Primeiro' e 'Segundo'.",
+                tutorial: "unshift pode receber múltiplos argumentos.",
+                tutorialCode: "const arr = ['C'];\narr.unshift('A', 'B');\nconsole.log(arr); // ['A', 'B', 'C']",
+                hints: ["Use unshift('Primeiro', 'Segundo')"],
+                initialCode: "const lista = ['Terceiro'];\n\n// Adicione 'Primeiro' e 'Segundo' no início",
+                validation: (code) => code.includes('unshift') && code.includes('Primeiro')
+            },
+            {
+                level: 1,
+                id: 106,
+                title: "Remover Primeiro e Último",
+                jeff: "Remova o primeiro E o último item do array.",
+                tutorial: "Use shift() e pop() em sequência.",
+                tutorialCode: "const arr = ['A', 'B', 'C', 'D'];\narr.shift();\narr.pop();\nconsole.log(arr); // ['B', 'C']",
+                hints: ["Use shift() depois pop()"],
+                initialCode: "const numeros = [1, 2, 3, 4, 5];\n\n// Remova primeiro e último",
+                validation: (code) => code.includes('shift') && code.includes('pop')
+            },
+            {
+                level: 1,
+                id: 107,
+                title: "String para Array",
+                jeff: "Converta a string 'ABC' em array ['A', 'B', 'C'] usando split.",
+                tutorial: "split('') divide cada caractere.",
+                tutorialCode: "const texto = 'ABC';\nconst arr = texto.split('');\nconsole.log(arr); // ['A', 'B', 'C']",
+                hints: ["Use string.split('')"],
+                initialCode: "const palavra = 'JavaScript';\n\n// Converta em array de letras",
+                validation: (code) => code.includes('split')
+            },
+            {
+                level: 1,
+                id: 108,
+                title: "Array para String",
+                jeff: "Converta o array em uma string com itens separados por '-'.",
+                tutorial: "join('-') une com traço.",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nconst texto = arr.join('-');\nconsole.log(texto); // 'A-B-C'",
+                hints: ["Use join('-')"],
+                initialCode: "const partes = ['2025', '01', '15'];\n\n// Una com traço: 2025-01-15",
+                validation: (code) => code.includes('join')
+            },
+            {
+                level: 1,
+                id: 109,
+                title: "Array com Espaços",
+                jeff: "Converta o array em string com espaços entre itens.",
+                tutorial: "join(' ') une com espaço.",
+                tutorialCode: "const palavras = ['Olá', 'mundo'];\nconst frase = palavras.join(' ');",
+                hints: ["Use join(' ')"],
+                initialCode: "const palavras = ['Eu', 'amo', 'JavaScript'];\n\n// Una com espaços",
+                validation: (code) => code.includes('join') && code.includes("' '")
+            },
+            {
+                level: 1,
+                id: 110,
+                title: "Limpar Array",
+                jeff: "Esvazie completamente o array definindo length = 0.",
+                tutorial: "Definir length = 0 remove todos os itens.",
+                tutorialCode: "const arr = [1, 2, 3, 4, 5];\narr.length = 0;\nconsole.log(arr); // []",
+                hints: ["array.length = 0"],
+                initialCode: "const lixo = ['item1', 'item2', 'item3'];\n\n// Esvazie o array",
+                validation: (code) => code.includes('length') && code.includes('= 0')
+            },
+            {
+                level: 1,
+                id: 111,
+                title: "Array de Números Pares",
+                jeff: "Crie manualmente um array com os 5 primeiros números pares: [2, 4, 6, 8, 10].",
+                tutorial: "Números pares são divisíveis por 2.",
+                tutorialCode: "const pares = [2, 4, 6, 8, 10];",
+                hints: ["Crie [2, 4, 6, 8, 10]"],
+                initialCode: "// Crie array com 5 primeiros pares",
+                validation: (code) => code.includes('[2') && code.includes('10]')
+            },
+            {
+                level: 1,
+                id: 112,
+                title: "Array de Números Ímpares",
+                jeff: "Crie manualmente um array com os 5 primeiros números ímpares: [1, 3, 5, 7, 9].",
+                tutorial: "Números ímpares não são divisíveis por 2.",
+                tutorialCode: "const impares = [1, 3, 5, 7, 9];",
+                hints: ["Crie [1, 3, 5, 7, 9]"],
+                initialCode: "// Crie array com 5 primeiros ímpares",
+                validation: (code) => code.includes('[1') && code.includes('9]')
+            },
+            {
+                level: 1,
+                id: 113,
+                title: "Modificar Item do Meio",
+                jeff: "Em um array de 5 itens, modifique o item do meio (índice 2).",
+                tutorial: "O item do meio de 5 elementos está no índice 2.",
+                tutorialCode: "const arr = [1, 2, 3, 4, 5];\narr[2] = 999;\nconsole.log(arr); // [1, 2, 999, 4, 5]",
+                hints: ["Use array[2] = novoValor"],
+                initialCode: "const letras = ['A', 'B', 'C', 'D', 'E'];\n\n// Modifique o do meio para 'X'",
+                validation: (code) => code.includes('[2]') && code.includes('=')
+            },
+            {
+                level: 1,
+                id: 114,
+                title: "Trocar Dois Itens",
+                jeff: "Troque os valores das posições 0 e 1 do array.",
+                tutorial: "Use uma variável temporária para fazer a troca.",
+                tutorialCode: "const arr = ['A', 'B'];\nconst temp = arr[0];\narr[0] = arr[1];\narr[1] = temp;\nconsole.log(arr); // ['B', 'A']",
+                hints: ["Use variável temp", "temp = array[0]", "Depois faça as trocas"],
+                initialCode: "const nums = [10, 20, 30];\n\n// Troque posições 0 e 1",
+                validation: (code) => code.includes('temp') || (code.includes('[0]') && code.includes('[1]'))
+            },
+            {
+                level: 1,
+                id: 115,
+                title: "Array de Temperaturas",
+                jeff: "Crie um array com 4 temperaturas (números) e mostre a primeira.",
+                tutorial: "Arrays de números não precisam de aspas.",
+                tutorialCode: "const temps = [25, 30, 28, 26];\nconsole.log(temps[0]);",
+                hints: ["Crie [temp1, temp2, temp3, temp4]", "Mostre [0]"],
+                initialCode: "// Crie array de temperaturas",
+                validation: (code) => code.includes('[') && code.includes('[0]')
+            },
+            {
+                level: 1,
+                id: 116,
+                title: "Contar Letras 'A'",
+                jeff: "Conte quantas vezes a letra 'A' aparece no array.",
+                tutorial: "Use loop e if para contar ocorrências.",
+                tutorialCode: "const arr = ['A', 'B', 'A', 'C'];\nlet count = 0;\nfor (let i = 0; i < arr.length; i++) {\n  if (arr[i] === 'A') count++;\n}\nconsole.log(count); // 2",
+                hints: ["Crie contador = 0", "Use if (array[i] === 'A')", "Incremente contador"],
+                initialCode: "const letras = ['A', 'B', 'A', 'C', 'A', 'D'];\n\n// Conte quantas letras 'A' existem",
+                validation: (code) => code.includes('for') && code.includes('if') && code.includes('A')
+            },
+            {
+                level: 1,
+                id: 117,
+                title: "Tem Número 5?",
+                jeff: "Verifique se o array contém o número 5.",
+                tutorial: "Use includes() para verificar.",
+                tutorialCode: "const nums = [1, 2, 3, 4, 5];\nconsole.log(nums.includes(5)); // true",
+                hints: ["Use includes(5)"],
+                initialCode: "const numeros = [10, 20, 30, 5, 40];\n\n// Verifique se contém 5",
+                validation: (code) => code.includes('includes') && code.includes('5')
+            },
+            {
+                level: 1,
+                id: 118,
+                title: "Posição do Número 100",
+                jeff: "Encontre em qual posição está o número 100.",
+                tutorial: "Use indexOf() com número.",
+                tutorialCode: "const nums = [10, 50, 100, 200];\nconsole.log(nums.indexOf(100)); // 2",
+                hints: ["Use indexOf(100)"],
+                initialCode: "const valores = [25, 50, 75, 100, 125];\n\n// Encontre posição do 100",
+                validation: (code) => code.includes('indexOf') && code.includes('100')
+            },
+            {
+                level: 1,
+                id: 119,
+                title: "Adicionar Nome no Final",
+                jeff: "Adicione seu nome no final da lista de nomes.",
+                tutorial: "Use push() com seu nome.",
+                tutorialCode: "const nomes = ['Ana', 'Bruno'];\nnomes.push('Carlos');\nconsole.log(nomes);",
+                hints: ["Use push('SeuNome')"],
+                initialCode: "const nomes = ['Ana', 'Bruno', 'Carlos'];\n\n// Adicione seu nome",
+                validation: (code) => code.includes('push')
+            },
+            {
+                level: 1,
+                id: 120,
+                title: "Remover Última Nota",
+                jeff: "Remova a última nota do array de notas.",
+                tutorial: "Use pop() para remover última nota.",
+                tutorialCode: "const notas = [8, 9, 7, 6];\nnotas.pop();\nconsole.log(notas);",
+                hints: ["Use pop()"],
+                initialCode: "const notas = [10, 8, 9, 7, 6];\n\n// Remova a última nota",
+                validation: (code) => code.includes('pop()')
+            },
+            {
+                level: 1,
+                id: 121,
+                title: "Array de Idades",
+                jeff: "Crie um array com 4 idades e mostre a segunda idade.",
+                tutorial: "Segundo item = índice 1.",
+                tutorialCode: "const idades = [25, 30, 35, 40];\nconsole.log(idades[1]); // 30",
+                hints: ["Crie array de idades", "Mostre [1]"],
+                initialCode: "// Crie array de idades e mostre a segunda",
+                validation: (code) => code.includes('[') && code.includes('[1]')
+            },
+            {
+                level: 1,
+                id: 122,
+                title: "Substituir Segunda Cor",
+                jeff: "Substitua a segunda cor do array por 'roxo'.",
+                tutorial: "Segunda posição = índice 1.",
+                tutorialCode: "const cores = ['vermelho', 'azul', 'verde'];\ncores[1] = 'roxo';\nconsole.log(cores);",
+                hints: ["Use array[1] = 'roxo'"],
+                initialCode: "const cores = ['vermelho', 'azul', 'verde'];\n\n// Substitua a segunda por 'roxo'",
+                validation: (code) => code.includes('[1]') && code.includes('roxo')
+            },
+            {
+                level: 1,
+                id: 123,
+                title: "Quantas Frutas?",
+                jeff: "Mostre quantas frutas existem no array.",
+                tutorial: "Use .length para contar.",
+                tutorialCode: "const frutas = ['maçã', 'banana', 'uva'];\nconsole.log('Total:', frutas.length);",
+                hints: ["Use .length"],
+                initialCode: "const frutas = ['maçã', 'banana', 'uva', 'laranja', 'pera'];\n\n// Mostre quantas frutas",
+                validation: (code) => code.includes('length')
+            },
+            {
+                level: 1,
+                id: 124,
+                title: "Três Nomes",
+                jeff: "Crie um array com exatamente 3 nomes e mostre todos.",
+                tutorial: "Crie array com 3 nomes e use console.log.",
+                tutorialCode: "const nomes = ['Ana', 'Bruno', 'Carlos'];\nconsole.log(nomes);",
+                hints: ["Crie array com 3 nomes", "console.log(array)"],
+                initialCode: "// Crie array com 3 nomes",
+                validation: (code) => code.includes('[') && code.includes(']')
+            },
+            {
+                level: 1,
+                id: 125,
+                title: "Primeira Cidade",
+                jeff: "Crie um array de 4 cidades e mostre apenas a primeira.",
+                tutorial: "Primeira cidade = índice 0.",
+                tutorialCode: "const cidades = ['São Paulo', 'Rio', 'BH', 'Curitiba'];\nconsole.log(cidades[0]);",
+                hints: ["Crie array de cidades", "Mostre [0]"],
+                initialCode: "// Crie array de cidades e mostre a primeira",
+                validation: (code) => code.includes('[') && code.includes('[0]')
+            },
+            {
+                level: 1,
+                id: 126,
+                title: "Última Cidade",
+                jeff: "Do array de cidades, mostre apenas a última.",
+                tutorial: "Última = [length - 1].",
+                tutorialCode: "const cidades = ['SP', 'RJ', 'MG', 'PR'];\nconsole.log(cidades[cidades.length - 1]);",
+                hints: ["Use [array.length - 1]"],
+                initialCode: "const cidades = ['São Paulo', 'Rio', 'Belo Horizonte', 'Curitiba'];\n\n// Mostre a última",
+                validation: (code) => code.includes('length') && code.includes('- 1')
+            },
+            {
+                level: 1,
+                id: 127,
+                title: "Array Vazio Depois Cheio",
+                jeff: "Crie um array vazio, depois adicione 3 itens usando push.",
+                tutorial: "Comece com [] e adicione itens.",
+                tutorialCode: "const arr = [];\narr.push('A');\narr.push('B');\narr.push('C');\nconsole.log(arr);",
+                hints: ["Crie const arr = []", "Use push 3 vezes"],
+                initialCode: "// Crie array vazio e adicione 3 itens",
+                validation: (code) => code.includes('[]') && code.includes('push')
+            },
+            {
+                level: 1,
+                id: 128,
+                title: "Combinar Nomes",
+                jeff: "Una dois arrays de nomes em um só usando concat.",
+                tutorial: "concat une arrays.",
+                tutorialCode: "const grupo1 = ['Ana', 'Bruno'];\nconst grupo2 = ['Carlos', 'Diana'];\nconst todos = grupo1.concat(grupo2);",
+                hints: ["Use array1.concat(array2)"],
+                initialCode: "const turmaA = ['João', 'Maria'];\nconst turmaB = ['Pedro', 'Paula'];\n\n// Una as duas turmas",
+                validation: (code) => code.includes('concat')
+            },
+            {
+                level: 1,
+                id: 129,
+                title: "Tem o Nome João?",
+                jeff: "Verifique se existe 'João' na lista de nomes.",
+                tutorial: "Use includes('João').",
+                tutorialCode: "const nomes = ['Ana', 'João', 'Maria'];\nconsole.log(nomes.includes('João')); // true",
+                hints: ["Use includes('João')"],
+                initialCode: "const alunos = ['Maria', 'Pedro', 'João', 'Ana'];\n\n// Verifique se tem João",
+                validation: (code) => code.includes('includes') && code.includes('João')
+            },
+            {
+                level: 1,
+                id: 130,
+                title: "Onde Está Maria?",
+                jeff: "Encontre em qual posição está 'Maria'.",
+                tutorial: "Use indexOf('Maria').",
+                tutorialCode: "const nomes = ['João', 'Maria', 'Pedro'];\nconsole.log(nomes.indexOf('Maria')); // 1",
+                hints: ["Use indexOf('Maria')"],
+                initialCode: "const pessoas = ['Ana', 'Bruno', 'Maria', 'Carlos'];\n\n// Encontre posição de Maria",
+                validation: (code) => code.includes('indexOf') && code.includes('Maria')
+            },
+            {
+                level: 1,
+                id: 131,
+                title: "Loop While",
+                jeff: "Use loop while para mostrar todos os itens do array.",
+                tutorial: "While funciona similar ao for.",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nlet i = 0;\nwhile (i < arr.length) {\n  console.log(arr[i]);\n  i++;\n}",
+                hints: ["let i = 0", "while (i < array.length)", "i++"],
+                initialCode: "const frutas = ['maçã', 'banana', 'uva'];\n\n// Mostre todas com while",
+                validation: (code) => code.includes('while') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 132,
+                title: "For...of Básico",
+                jeff: "Use for...of para mostrar cada item (mais simples que for tradicional).",
+                tutorial: "for...of itera diretamente sobre valores.",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nfor (let item of arr) {\n  console.log(item);\n}",
+                hints: ["for (let item of array)", "console.log(item)"],
+                initialCode: "const cores = ['vermelho', 'azul', 'verde'];\n\n// Mostre todas com for...of",
+                validation: (code) => code.includes('for') && code.includes('of')
+            },
+            {
+                level: 1,
+                id: 133,
+                title: "Somar 3 Números",
+                jeff: "Some os 3 números do array e mostre o resultado.",
+                tutorial: "Use variável soma e loop.",
+                tutorialCode: "const nums = [10, 20, 30];\nlet soma = 0;\nfor (let n of nums) soma += n;\nconsole.log(soma); // 60",
+                hints: ["let soma = 0", "soma += numero"],
+                initialCode: "const numeros = [5, 10, 15];\n\n// Some os 3 números",
+                validation: (code) => code.includes('soma') && (code.includes('for') || code.includes('+='))
+            },
+            {
+                level: 1,
+                id: 134,
+                title: "Maior Número",
+                jeff: "Encontre o maior número do array usando Math.max.",
+                tutorial: "Math.max(...array) encontra o maior.",
+                tutorialCode: "const nums = [10, 50, 30, 80, 20];\nconst maior = Math.max(...nums);\nconsole.log(maior); // 80",
+                hints: ["Use Math.max(...array)", "Os ... expandem o array"],
+                initialCode: "const valores = [45, 78, 23, 91, 56];\n\n// Encontre o maior",
+                validation: (code) => code.includes('Math.max') && code.includes('...')
+            },
+            {
+                level: 1,
+                id: 135,
+                title: "Menor Número",
+                jeff: "Encontre o menor número do array usando Math.min.",
+                tutorial: "Math.min(...array) encontra o menor.",
+                tutorialCode: "const nums = [10, 50, 30, 5, 20];\nconst menor = Math.min(...nums);\nconsole.log(menor); // 5",
+                hints: ["Use Math.min(...array)"],
+                initialCode: "const valores = [45, 12, 78, 23, 56];\n\n// Encontre o menor",
+                validation: (code) => code.includes('Math.min') && code.includes('...')
+            },
+            {
+                level: 1,
+                id: 136,
+                title: "Inverter com Reverse",
+                jeff: "Inverta a ordem dos elementos usando reverse().",
+                tutorial: "reverse() inverte o array original.",
+                tutorialCode: "const arr = [1, 2, 3];\narr.reverse();\nconsole.log(arr); // [3, 2, 1]",
+                hints: ["Use array.reverse()"],
+                initialCode: "const numeros = [1, 2, 3, 4, 5];\n\n// Inverta a ordem",
+                validation: (code) => code.includes('reverse')
+            },
+            {
+                level: 1,
+                id: 137,
+                title: "Array de 1 a 3",
+                jeff: "Crie um array [1, 2, 3] usando Array.from.",
+                tutorial: "Array.from({length: n}, (_, i) => i + 1) cria sequência.",
+                tutorialCode: "const arr = Array.from({length: 3}, (_, i) => i + 1);\nconsole.log(arr); // [1, 2, 3]",
+                hints: ["Use Array.from({length: 3}, (_, i) => i + 1)"],
+                initialCode: "// Crie [1, 2, 3] com Array.from",
+                validation: (code) => code.includes('Array.from') && code.includes('length')
+            },
+            {
+                level: 1,
+                id: 138,
+                title: "Letra por Letra",
+                jeff: "Converta 'OLÁ' em array de letras ['O', 'L', 'Á'].",
+                tutorial: "Use split('') para dividir cada caractere.",
+                tutorialCode: "const palavra = 'OLÁ';\nconst letras = palavra.split('');\nconsole.log(letras);",
+                hints: ["Use string.split('')"],
+                initialCode: "const palavra = 'BRASIL';\n\n// Converta em array de letras",
+                validation: (code) => code.includes('split') && code.includes("''")
+            },
+            {
+                level: 1,
+                id: 139,
+                title: "Palavras Separadas",
+                jeff: "Converta 'Eu amo programar' em array de palavras.",
+                tutorial: "Use split(' ') para dividir por espaço.",
+                tutorialCode: "const frase = 'Eu amo programar';\nconst palavras = frase.split(' ');\nconsole.log(palavras);",
+                hints: ["Use split(' ') com espaço"],
+                initialCode: "const frase = 'JavaScript é incrível';\n\n// Converta em array de palavras",
+                validation: (code) => code.includes('split') && code.includes("' '")
+            },
+            {
+                level: 1,
+                id: 140,
+                title: "Juntar com Vírgula",
+                jeff: "Una os itens do array com vírgula: 'A,B,C'.",
+                tutorial: "Use join(',').",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nconst texto = arr.join(',');\nconsole.log(texto); // 'A,B,C'",
+                hints: ["Use join(',')"],
+                initialCode: "const letras = ['X', 'Y', 'Z'];\n\n// Una com vírgula",
+                validation: (code) => code.includes('join') && code.includes(',')
+            },
+            {
+                level: 1,
+                id: 141,
+                title: "Copiar com Spread",
+                jeff: "Crie uma cópia do array usando spread operator [...].",
+                tutorial: "Spread [...array] cria cópia.",
+                tutorialCode: "const original = [1, 2, 3];\nconst copia = [...original];\nconsole.log(copia);",
+                hints: ["Use const copia = [...array]"],
+                initialCode: "const original = ['A', 'B', 'C'];\n\n// Crie cópia com spread",
+                validation: (code) => code.includes('...') && code.includes('[')
+            },
+            {
+                level: 1,
+                id: 142,
+                title: "Adicionar no Meio com Spread",
+                jeff: "Adicione 'X' no meio do array usando spread.",
+                tutorial: "Podemos usar spread para inserir no meio.",
+                tutorialCode: "const arr1 = ['A', 'B'];\nconst arr2 = ['D', 'E'];\nconst junto = [...arr1, 'C', ...arr2];",
+                hints: ["[...inicio, 'novo', ...fim]"],
+                initialCode: "const parte1 = [1, 2];\nconst parte2 = [4, 5];\n\n// Crie [1, 2, 3, 4, 5]",
+                validation: (code) => code.includes('...') && code.includes('[')
+            },
+            {
+                level: 1,
+                id: 143,
+                title: "Verificar Vazio",
+                jeff: "Verifique se o array está vazio (length === 0).",
+                tutorial: "Array vazio tem length 0.",
+                tutorialCode: "const arr = [];\nif (arr.length === 0) {\n  console.log('Vazio!');\n}",
+                hints: ["Use if (array.length === 0)"],
+                initialCode: "const lista = [];\n\n// Verifique se está vazio",
+                validation: (code) => code.includes('length') && code.includes('0')
+            },
+            {
+                level: 1,
+                id: 144,
+                title: "Verificar Não Vazio",
+                jeff: "Verifique se o array NÃO está vazio (length > 0).",
+                tutorial: "Array com itens tem length > 0.",
+                tutorialCode: "const arr = [1, 2];\nif (arr.length > 0) {\n  console.log('Tem itens!');\n}",
+                hints: ["Use if (array.length > 0)"],
+                initialCode: "const produtos = ['Mouse', 'Teclado'];\n\n// Verifique se NÃO está vazio",
+                validation: (code) => code.includes('length') && code.includes('>')
+            },
+            {
+                level: 1,
+                id: 145,
+                title: "Contar Números Positivos",
+                jeff: "Conte quantos números positivos (> 0) existem no array.",
+                tutorial: "Use loop e if para contar.",
+                tutorialCode: "const nums = [-5, 10, -3, 8, -1];\nlet count = 0;\nfor (let n of nums) {\n  if (n > 0) count++;\n}\nconsole.log(count);",
+                hints: ["Contador = 0", "if (numero > 0) contador++"],
+                initialCode: "const numeros = [-10, 5, -3, 8, 0, 15, -2];\n\n// Conte os positivos",
+                validation: (code) => code.includes('> 0') && (code.includes('for') || code.includes('while'))
+            },
+            {
+                level: 1,
+                id: 146,
+                title: "Tem Número Negativo?",
+                jeff: "Verifique se existe ALGUM número negativo no array.",
+                tutorial: "Número negativo é < 0.",
+                tutorialCode: "const nums = [1, 2, -5, 4];\nlet temNegativo = false;\nfor (let n of nums) {\n  if (n < 0) temNegativo = true;\n}\nconsole.log(temNegativo);",
+                hints: ["let temNegativo = false", "if (numero < 0)"],
+                initialCode: "const valores = [10, 20, 30, 40];\n\n// Verifique se tem negativo",
+                validation: (code) => code.includes('< 0')
+            },
+            {
+                level: 1,
+                id: 147,
+                title: "Primeiro e Segundo",
+                jeff: "Mostre o primeiro e o segundo item do array.",
+                tutorial: "Primeiro = [0], Segundo = [1].",
+                tutorialCode: "const arr = ['A', 'B', 'C'];\nconsole.log('Primeiro:', arr[0]);\nconsole.log('Segundo:', arr[1]);",
+                hints: ["array[0] e array[1]"],
+                initialCode: "const nomes = ['Ana', 'Bruno', 'Carlos', 'Diana'];\n\n// Mostre primeiro e segundo",
+                validation: (code) => code.includes('[0]') && code.includes('[1]')
+            },
+            {
+                level: 1,
+                id: 148,
+                title: "Antepenúltimo Item",
+                jeff: "Mostre o antepenúltimo item (terceiro de trás para frente).",
+                tutorial: "Antepenúltimo = length - 3.",
+                tutorialCode: "const arr = [1, 2, 3, 4, 5];\nconsole.log(arr[arr.length - 3]); // 3",
+                hints: ["Use array[array.length - 3]"],
+                initialCode: "const numeros = [10, 20, 30, 40, 50];\n\n// Mostre o antepenúltimo",
+                validation: (code) => code.includes('length') && code.includes('- 3')
+            },
+            {
+                level: 1,
+                id: 149,
+                title: "Média de 3 Números",
+                jeff: "Calcule a média de 3 números do array.",
+                tutorial: "Média = soma / quantidade.",
+                tutorialCode: "const nums = [10, 20, 30];\nconst soma = nums[0] + nums[1] + nums[2];\nconst media = soma / 3;\nconsole.log(media); // 20",
+                hints: ["Some os 3 números", "Divida por 3"],
+                initialCode: "const notas = [8, 9, 7];\n\n// Calcule a média",
+                validation: (code) => code.includes('+') && code.includes('/')
+            },
+            {
+                level: 1,
+                id: 150,
+                title: "Desafio Final Nível 1",
+                jeff: "DESAFIO! Crie array [1,2,3,4,5], remova o primeiro e o último, adicione 10 no final, e mostre o tamanho final.",
+                tutorial: "Combine vários métodos: shift(), pop(), push(), length.",
+                tutorialCode: "const arr = [1, 2, 3];\narr.shift();\narr.pop();\narr.push(10);\nconsole.log(arr.length);",
+                hints: ["Use shift() e pop()", "Use push(10)", "Mostre length"],
+                initialCode: "// Complete o desafio final do nível básico!",
+                validation: (code) => code.includes('shift') && code.includes('pop') && code.includes('push') && code.includes('length')
+            },
+            {
+                level: 2,
+                id: 69,
+                title: "Somar Todos os Números",
+                jeff: "Some todos os números de um array usando loop.",
+                tutorial: "Criamos variável soma = 0 e vamos somando cada elemento.",
+                tutorialCode: "const nums = [10, 20, 30];\nlet soma = 0;\nfor (let n of nums) { soma += n; }",
+                hints: ["Crie let soma = 0", "Use for of", "soma += numero"],
+                initialCode: "const valores = [5, 10, 15, 20, 25];\n\n// Some todos os valores",
+                validation: (code) => code.includes('soma') && (code.includes('for') || code.includes('+='))
+            },
+            {
+                level: 2,
+                id: 70,
+                title: "Multiplicar por 2",
+                jeff: "Crie um novo array com todos os números multiplicados por 2, usando loop.",
+                tutorial: "Percorremos o array original e adicionamos (valor * 2) no novo array.",
+                tutorialCode: "const nums = [1, 2, 3];\nconst dobrados = [];\nfor (let n of nums) { dobrados.push(n * 2); }",
+                hints: ["Crie array vazio", "Use for", "Push (numero * 2)"],
+                initialCode: "const numeros = [5, 10, 15, 20];\n\n// Crie array com valores dobrados",
+                validation: (code) => code.includes('*') && code.includes('2') && code.includes('push')
+            },
+            {
+                level: 3,
+                id: 71,
+                title: "Juntar com Espaços",
+                jeff: "Una as palavras do array em uma frase, separadas por espaço.",
+                tutorial: "join(' ') une elementos com espaço entre eles.",
+                tutorialCode: "const palavras = ['Olá', 'mundo', 'JavaScript'];\nconst frase = palavras.join(' ');",
+                hints: ["Use join(' ')"],
+                initialCode: "const palavras = ['Aprenda', 'JavaScript', 'com', 'arrays'];\n\n// Una em uma frase",
+                validation: (code) => code.includes('join') && code.includes("' '")
+            },
+            {
+                level: 3,
+                id: 72,
+                title: "Separar por Vírgula",
+                jeff: "Converta a string 'Mouse,Teclado,Monitor' em array usando split.",
+                tutorial: "split(',') divide a string em cada vírgula.",
+                tutorialCode: "const texto = 'A,B,C';\nconst arr = texto.split(',');",
+                hints: ["Use split(',')"],
+                initialCode: "const csv = 'Mouse,Teclado,Monitor,Webcam';\n\n// Converta em array",
+                validation: (code) => code.includes('split') && code.includes(',')
+            },
+            {
+                level: 3,
+                id: 73,
+                title: "Três Primeiros Items",
+                jeff: "Pegue apenas os 3 primeiros produtos usando slice(0, 3).",
+                tutorial: "slice(inicio, fim) extrai uma parte. slice(0, 3) pega índices 0, 1 e 2.",
+                tutorialCode: "const arr = ['A', 'B', 'C', 'D', 'E'];\nconst primeiros = arr.slice(0, 3);",
+                hints: ["Use slice(0, 3)"],
+                initialCode: "const produtos = ['Mouse', 'Teclado', 'Monitor', 'Webcam', 'Headset'];\n\n// Pegue apenas os 3 primeiros",
+                validation: (code) => code.includes('slice') && code.includes('0') && code.includes('3')
+            },
+            {
+                level: 4,
+                id: 74,
+                title: "Contar Pares e Ímpares",
+                jeff: "De um array de números, conte quantos são pares e quantos são ímpares.",
+                tutorial: "Usamos % 2 para verificar se é par (resto 0) ou ímpar (resto 1).",
+                tutorialCode: "const nums = [1, 2, 3, 4, 5];\nlet pares = 0, impares = 0;\nfor (let n of nums) {\n  if (n % 2 === 0) pares++; else impares++;\n}",
+                hints: ["Use num % 2 === 0 para verificar par", "Crie contadores"],
+                initialCode: "const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\n// Conte pares e ímpares",
+                validation: (code) => code.includes('% 2') && (code.includes('pares') || code.includes('par'))
+            },
+            {
+                level: 4,
+                id: 75,
+                title: "Desafio Final Completo",
+                jeff: "DESAFIO MASTER! Crie array [10,20,30,40,50], remova os extremos, dobre os valores restantes e mostre a soma total.",
+                tutorial: "Combine tudo: shift, pop, loop para dobrar, soma final.",
+                tutorialCode: "const arr = [10, 20, 30];\narr.shift(); arr.pop();\nconst dobrados = [];\nfor (let n of arr) dobrados.push(n * 2);\nlet soma = 0;\nfor (let n of dobrados) soma += n;",
+                hints: ["Remova primeiro e último", "Dobre cada número", "Some todos"],
+                initialCode: "// Complete o desafio final de todos os níveis!",
+                validation: (code) => code.includes('shift') && code.includes('pop') && code.includes('*') && code.includes('soma')
+            }
+        ];
+
+        let currentExerciseIndex = 0;
+        let completedExercises = new Set();
+        let currentHintIndex = 0;
+
+        const motivationalMessages = [
+            "Você está indo muito bem! Continue assim! 💪",
+            "Excelente trabalho! Seus skills estão evoluindo! 🚀",
+            "Impressionante! Você é um mestre dos arrays! ⭐",
+            "Parabéns! Mais um desafio conquistado! 🎉",
+            "Incrível! Jeff está orgulhoso de você! 👍",
+            "Perfeito! Você domina JavaScript! 💎"
+        ];
+
+        function toggleLevel(level) {
+            const list = document.getElementById('level' + level);
+            const title = document.getElementById('levelTitle' + level);
+            
+            if (list && title) {
+                list.classList.toggle('hidden');
+                title.classList.toggle('collapsed');
+            }
+        }
+
+        function renderExerciseList() {
+            const levels = {1: [], 2: [], 3: [], 4: []};
+            exercises.forEach((ex, index) => {
+                levels[ex.level].push({...ex, arrayIndex: index});
+            });
+
+            Object.keys(levels).forEach(level => {
+                const container = document.getElementById(`level${level}`);
+                if (container) {
+                    levels[level].forEach(ex => {
+                        const li = document.createElement('li');
+                        li.className = 'exercise-item';
+                        li.textContent = ex.title;
+                        li.onclick = () => loadExercise(ex.arrayIndex);
+                        if (completedExercises.has(ex.arrayIndex)) {
+                            li.classList.add('completed');
+                        }
+                        container.appendChild(li);
+                    });
+                }
+            });
+        }
+
+        function loadExercise(index) {
+            currentExerciseIndex = index;
+            currentHintIndex = 0;
+            const exercise = exercises[index];
+
+            document.getElementById('jeffMessage').textContent = exercise.jeff;
+            document.getElementById('tutorialContent').innerHTML = `
+                <p>${exercise.tutorial}</p>
+                ${exercise.tutorialCode ? `<div class="code-example">${exercise.tutorialCode}</div>` : ''}
+            `;
+
+            const hintsContainer = document.getElementById('hintsContainer');
+            hintsContainer.innerHTML = '';
+            exercise.hints.forEach((hint, i) => {
+                const hintDiv = document.createElement('div');
+                hintDiv.className = 'hint';
+                hintDiv.id = `hint${i}`;
+                hintDiv.textContent = `💡 Dica ${i + 1}: ${hint}`;
+                hintsContainer.appendChild(hintDiv);
+            });
+
+            const hintButton = document.querySelector('.hint-toggle');
+            hintButton.disabled = false;
+            hintButton.textContent = '💡 Mostrar Dica';
+
+            document.getElementById('codeEditor').value = exercise.initialCode;
+            document.getElementById('consoleOutput').innerHTML = '';
+
+            document.querySelectorAll('.exercise-item').forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === index) item.classList.add('active');
+            });
+
+            document.getElementById('codeEditor').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+
+            updateProgress();
+        }
+
+        function showNextHint() {
+            const exercise = exercises[currentExerciseIndex];
+            const hintButton = document.querySelector('.hint-toggle');
+            
+            if (currentHintIndex < exercise.hints.length) {
+                const hint = document.getElementById(`hint${currentHintIndex}`);
+                if (hint) hint.classList.add('visible');
+                currentHintIndex++;
+                
+                if (currentHintIndex >= exercise.hints.length) {
+                    hintButton.disabled = true;
+                    hintButton.textContent = '✓ Todas as dicas reveladas';
+                    hintButton.style.opacity = '0.6';
+                    hintButton.style.cursor = 'not-allowed';
+                } else {
+                    hintButton.textContent = `💡 Mostrar Dica (${currentHintIndex}/${exercise.hints.length})`;
+                }
+            }
+        }
+
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const consoleOutput = document.getElementById('consoleOutput');
+            consoleOutput.innerHTML = '';
+
+            const logs = [];
+            const originalLog = console.log;
+            console.log = function(...args) {
+                logs.push(args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' '));
+                originalLog.apply(console, args);
+            };
+
+            try {
+                eval(code);
+                
+                if (logs.length > 0) {
+                    consoleOutput.innerHTML = logs.map(log => 
+                        `<div class="console-output">${escapeHtml(log)}</div>`
+                    ).join('');
+                } else {
+                    consoleOutput.innerHTML = '<div class="console-output">✓ Código executado com sucesso! Use console.log() para ver resultados.</div>';
+                }
+
+                const exercise = exercises[currentExerciseIndex];
+                if (exercise.validation(code)) {
+                    consoleOutput.innerHTML += '<div class="console-success">🎉 EXERCÍCIO COMPLETO! Parabéns! Você acertou!</div>';
+                    markAsCompleted();
+                    showRobotMessage();
+                } else {
+                    consoleOutput.innerHTML += '<div class="console-wrong">⚠️ Ainda não está correto. Revise as dicas e tente novamente!</div>';
+                }
+
+            } catch (error) {
+                consoleOutput.innerHTML = `<div class="console-error">❌ Erro: ${escapeHtml(error.message)}</div>`;
+                consoleOutput.innerHTML += '<div class="console-wrong">⚠️ Corrija o erro e tente novamente!</div>';
+            } finally {
+                console.log = originalLog;
+            }
+        }
+
+        function resetCode() {
+            const exercise = exercises[currentExerciseIndex];
+            document.getElementById('codeEditor').value = exercise.initialCode;
+            document.getElementById('consoleOutput').innerHTML = '';
+        }
+
+        function markAsCompleted() {
+            completedExercises.add(currentExerciseIndex);
+            
+            const items = document.querySelectorAll('.exercise-item');
+            const currentItem = items[currentExerciseIndex];
+            currentItem.classList.add('completed');
+            
+            currentItem.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                currentItem.style.transform = '';
+            }, 300);
+            
+            updateProgress();
+            
+            localStorage.setItem('jsArrayMasterProgress', JSON.stringify([...completedExercises]));
+            
+            setTimeout(() => {
+                const nextIncomplete = exercises.findIndex((ex, idx) => 
+                    idx > currentExerciseIndex && !completedExercises.has(idx)
+                );
+                if (nextIncomplete !== -1) {
+                    const nextItem = items[nextIncomplete];
+                    nextItem.style.animation = 'pulse 1s ease 3';
+                }
+            }, 1000);
+        }
+
+        function updateProgress() {
+            const completed = completedExercises.size;
+            const total = exercises.length;
+            const percentage = (completed / total) * 100;
+            
+            const completedElement = document.getElementById('completedCount');
+            const progressFill = document.getElementById('progressFill');
+            
+            completedElement.textContent = completed;
+            progressFill.style.width = percentage + '%';
+            
+            const completedCard = completedElement.parentElement;
+            completedCard.classList.add('highlight');
+            setTimeout(() => {
+                completedCard.classList.remove('highlight');
+            }, 600);
+            
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        function showRobotMessage() {
+            const robot = document.getElementById('robotMotivator');
+            const message = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            document.getElementById('robotMessage').textContent = message;
+            
+            robot.classList.add('show');
+            
+            setTimeout(() => {
+                robot.classList.remove('show');
+            }, 4000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('jsArrayMasterProgress');
+            if (saved) {
+                completedExercises = new Set(JSON.parse(saved));
+            }
+        }
+
+        function initializeApp() {
+            renderExerciseList();
+            loadExercise(0);
+            setTimeout(() => toggleLevel(1), 100);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                resetCode();
+            }
+
+            if (e.altKey && e.key === 'ArrowLeft' && currentExerciseIndex > 0) {
+                e.preventDefault();
+                loadExercise(currentExerciseIndex - 1);
+            }
+            if (e.altKey && e.key === 'ArrowRight' && currentExerciseIndex < exercises.length - 1) {
+                e.preventDefault();
+                loadExercise(currentExerciseIndex + 1);
+            }
+        });
+
+        loadProgress();
+        initializeApp();
+
+        setTimeout(() => {
+            const robot = document.getElementById('robotMotivator');
+            document.getElementById('robotMessage').textContent = '👋 Olá! Sou o CodeBot! Vou te acompanhar nessa jornada. Boa sorte com os desafios!';
+            robot.classList.add('show');
+            setTimeout(() => robot.classList.remove('show'), 5000);
+        }, 1000);
+    </script>
+</body>
+</html>
