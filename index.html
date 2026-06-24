@@ -2286,7 +2286,8 @@
                 hints: ["1. Filter: ativo === true && estoque > 0", "2. Map: aplique desconto", "3. Reduce: agrupe por categoria", "4. Ordene resultado"],
                 initialCode: "const produtos = [\n  {nome: 'Mouse', preco: 100, categoria: 'Periféricos', ativo: true, estoque: 5},\n  {nome: 'Teclado', preco: 200, categoria: 'Periféricos', ativo: true, estoque: 0},\n  {nome: 'Monitor', preco: 1000, categoria: 'Monitores', ativo: true, estoque: 3},\n  {nome: 'Webcam', preco: 300, categoria: 'Periféricos', ativo: false, estoque: 10},\n  {nome: 'TV', preco: 2000, categoria: 'Monitores', ativo: true, estoque: 2}\n];\n\n// Complete o desafio final!",
                 validation: (code) => code.includes('filter') && code.includes('map') && code.includes('reduce')
-            },    
+            }
+            ];
 
         let currentExerciseIndex = 0;
         let completedExercises = new Set();
